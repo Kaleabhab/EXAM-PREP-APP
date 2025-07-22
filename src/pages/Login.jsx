@@ -1,135 +1,211 @@
-// src/pages/Login.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { auth } from '../firebase';
+import {
+  FaEnvelope,
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+  FaArrowRight,
+  FaGoogle,
+  FaGithub,
+  FaFacebook,
+} from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 const Login = () => {
-  const { login, signInWithGoogle, resetPassword } = useAuth();
+  const { login, signInWithGoogle, signInWithGithub, signInWithFacebook, resetPassword } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [resetEmail, setResetEmail] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const [resetMessage, setResetMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
+    
     try {
       const userCredential = await login(email, password);
       const user = userCredential.user;
 
       if (!user.emailVerified) {
         setError('Please verify your email before logging in.');
+        setLoading(false);
         return;
       }
 
       navigate('/');
     } catch (err) {
       setError(err.message || 'Login failed.');
+      setLoading(false);
     }
   };
 
-  const handleGoogleLogin = async () => {
+  const handleSocialLogin = async (provider) => {
     setError('');
+    setLoading(true);
+    
     try {
-      const userCredential = await signInWithGoogle();
-      const user = userCredential.user;
+      let userCredential;
+      switch (provider) {
+        case 'Google':
+          userCredential = await signInWithGoogle();
+          break;
+        case 'GitHub':
+          userCredential = await signInWithGithub();
+          break;
+        case 'Facebook':
+          userCredential = await signInWithFacebook();
+          break;
+        default:
+          throw new Error('Unsupported provider');
+      }
 
-      // Optionally: warn user if Google email is not verified (rarely needed)
+      // Optionally check email verification for social providers if needed
       navigate('/');
     } catch (err) {
-      setError(err.message || 'Google sign-in failed.');
-    }
-  };
-
-  const handleResetPassword = async () => {
-    setResetMessage('');
-    if (!resetEmail) {
-      setResetMessage('Please enter your email.');
-      return;
-    }
-
-    try {
-      await resetPassword(resetEmail);
-      setResetMessage('Password reset link sent to your email.');
-    } catch (err) {
-      setResetMessage('Error: ' + err.message);
+      setError(err.message || `${provider} sign-in failed.`);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 bg-white rounded shadow space-y-6">
-      <h2 className="text-xl font-semibold text-center">Login</h2>
-      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="w-full max-w-md mx-auto mt-10 p-6"
+    >
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome back</h1>
+        <p className="text-gray-600">Sign in to your account</p>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full px-4 py-2 border rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full px-4 py-2 border rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+      {error && (
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm"
         >
-          Login
-        </button>
-      </form>
+          {error}
+        </motion.div>
+      )}
 
-      <div className="mt-6 bg-gray-50 p-4 rounded border">
-        <p className="text-sm text-gray-600 mb-2">
-          Forgot your password? Enter your email below to receive a reset link.
-        </p>
-        <div className="flex space-x-2">
+      {/* Social Login Buttons */}
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <motion.button
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => handleSocialLogin('Google')}
+          className="flex items-center justify-center p-3 bg-red-50 text-red-500 rounded-lg shadow"
+          aria-label="Login with Google"
+          disabled={loading}
+        >
+          <FaGoogle className="text-xl" />
+        </motion.button>
+
+        <motion.button
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => handleSocialLogin('GitHub')}
+          className="flex items-center justify-center p-3 bg-gray-800 text-white rounded-lg shadow"
+          aria-label="Login with GitHub"
+          disabled={loading}
+        >
+          <FaGithub className="text-xl" />
+        </motion.button>
+
+        <motion.button
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => handleSocialLogin('Facebook')}
+          className="flex items-center justify-center p-3 bg-blue-600 text-white rounded-lg shadow"
+          aria-label="Login with Facebook"
+          disabled={loading}
+        >
+          <FaFacebook className="text-xl" />
+        </motion.button>
+      </div>
+
+      {/* Divider */}
+      <div className="flex items-center my-6">
+        <div className="flex-grow border-t border-gray-300"></div>
+        <span className="mx-4 text-gray-500 text-sm">OR</span>
+        <div className="flex-grow border-t border-gray-300"></div>
+      </div>
+
+      {/* Email/Password Login */}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="relative">
+          <FaEnvelope className="absolute left-3 top-3.5 text-gray-400" />
           <input
             type="email"
-            placeholder="Your email"
-            className="flex-1 px-3 py-2 border rounded"
-            value={resetEmail}
-            onChange={(e) => setResetEmail(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            placeholder="Email address"
+            required
+            disabled={loading}
+          />
+        </div>
+
+        <div className="relative">
+          <FaLock className="absolute left-3 top-3.5 text-gray-400" />
+          <input
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full pl-10 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            placeholder="Password"
+            required
+            disabled={loading}
           />
           <button
-            onClick={handleResetPassword}
-            className="bg-yellow-500 text-white px-4 rounded hover:bg-yellow-600"
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-3.5 text-gray-500 hover:text-gray-700"
+            disabled={loading}
           >
-            Send Link
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
-        {resetMessage && (
-          <p className="mt-2 text-green-600 text-sm">{resetMessage}</p>
-        )}
+
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={() => navigate('/reset-password')}
+            className="text-sm text-purple-600 hover:text-purple-800 hover:underline"
+            disabled={loading}
+          >
+            Forgot password?
+          </button>
+        </div>
+
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          type="submit"
+          className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-4 rounded-lg font-medium disabled:opacity-70"
+          disabled={loading}
+        >
+          {loading ? 'Signing In...' : 'Sign In'}
+        </motion.button>
+      </form>
+
+      {/* Register Prompt */}
+      <div className="mt-6 text-center">
+        <button
+          onClick={() => navigate('/register')}
+          className="text-sm text-gray-600 hover:text-gray-800 hover:underline flex items-center justify-center mx-auto"
+          disabled={loading}
+        >
+          Don&apos;t have an account? Register <FaArrowRight className="ml-1" />
+        </button>
       </div>
-
-      <hr className="my-4" />
-
-      <button
-        onClick={handleGoogleLogin}
-        className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600"
-      >
-        Sign in with Google
-      </button>
-
-      <div className="text-center text-sm text-gray-500">
-        New here?{' '}
-        <Link to="/register" className="text-blue-600 hover:underline">
-          Register
-        </Link>
-      </div>
-    </div>
+    </motion.div>
   );
 };
 
