@@ -1,8 +1,6 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { auth } from '../firebase';
 
 const Login = () => {
   const { login, signInWithGoogle, resetPassword } = useAuth();
@@ -18,14 +16,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const userCredential = await login(email, password);
-      const user = userCredential.user;
-
-      if (!user.emailVerified) {
-        setError('Please verify your email before logging in.');
-        return;
-      }
-
+      await login(email, password);
       navigate('/');
     } catch (err) {
       setError(err.message || 'Login failed.');
@@ -35,10 +26,7 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     setError('');
     try {
-      const userCredential = await signInWithGoogle();
-      const user = userCredential.user;
-
-      // Optionally: warn user if Google email is not verified (rarely needed)
+      await signInWithGoogle();
       navigate('/');
     } catch (err) {
       setError(err.message || 'Google sign-in failed.');
