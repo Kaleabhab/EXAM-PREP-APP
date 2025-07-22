@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useState } from 'react';
+=======
+import React, { useState } from 'react';
+>>>>>>> df5358023ecca555f414de334c9ad24adfb8740a
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowLeft } from 'react-icons/fa';
@@ -24,8 +28,8 @@ const Register = () => {
 
     try {
       await register(email, password);
-      setMessage('Verification email sent! Please check your inbox.');
-      setTimeout(() => navigate('/login'), 3000);
+      setMessage('Registration successful! Redirecting to login...');
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
       setError(err.message);
     } finally {

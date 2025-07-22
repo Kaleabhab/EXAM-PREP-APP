@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -12,6 +13,11 @@ import {
   FaFacebook,
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+=======
+import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
+>>>>>>> df5358023ecca555f414de334c9ad24adfb8740a
 
 const Login = () => {
   const { login, signInWithGoogle, signInWithGithub, signInWithFacebook, resetPassword } = useAuth();
@@ -29,6 +35,7 @@ const Login = () => {
     setLoading(true);
     
     try {
+<<<<<<< HEAD
       const userCredential = await login(email, password);
       const user = userCredential.user;
 
@@ -38,6 +45,9 @@ const Login = () => {
         return;
       }
 
+=======
+      await login(email, password);
+>>>>>>> df5358023ecca555f414de334c9ad24adfb8740a
       navigate('/');
     } catch (err) {
       setError(err.message || 'Login failed.');
@@ -50,6 +60,7 @@ const Login = () => {
     setLoading(true);
     
     try {
+<<<<<<< HEAD
       let userCredential;
       switch (provider) {
         case 'Google':
@@ -66,6 +77,9 @@ const Login = () => {
       }
 
       // Optionally check email verification for social providers if needed
+=======
+      await signInWithGoogle();
+>>>>>>> df5358023ecca555f414de334c9ad24adfb8740a
       navigate('/');
     } catch (err) {
       setError(err.message || `${provider} sign-in failed.`);
