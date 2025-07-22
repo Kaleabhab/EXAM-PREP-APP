@@ -1,4 +1,3 @@
-// src/context/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   onAuthStateChanged,
@@ -15,25 +14,66 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
+      setLoading(false); // Set loading to false once auth state is determined
+      
+      // Optional: Store user token in localStorage for additional persistence
+      if (firebaseUser) {
+        firebaseUser.getIdToken().then(token => {
+          localStorage.setItem('firebaseToken', token);
+        });
+      } else {
+        localStorage.removeItem('firebaseToken');
+      }
     });
     return () => unsubscribe();
   }, []);
 
-  const login = (email, password) =>
-    signInWithEmailAndPassword(auth, email, password);
+  const login = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      // Store additional user data if needed
+      localStorage.setItem('userEmail', email);
+      return userCredential;
+    } catch (error) {
+      throw error;
+    }
+  };
 
-  const register = (email, password) =>
-    createUserWithEmailAndPassword(auth, email, password);
+  const register = async (email, password) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      localStorage.setItem('userEmail', email);
+      return userCredential;
+    } catch (error) {
+      throw error;
+    }
+  };
 
-  const logout = () => signOut(auth);
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      // Clear any stored data
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('firebaseToken');
+    } catch (error) {
+      throw error;
+    }
+  };
 
-  const signInWithGoogle = () => {
+  const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
+    try {
+      const userCredential = await signInWithPopup(auth, provider);
+      localStorage.setItem('userEmail', userCredential.user.email);
+      return userCredential;
+    } catch (error) {
+      throw error;
+    }
   };
 
   const resetPassword = (email) => sendPasswordResetEmail(auth, email);
@@ -42,6 +82,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        loading, // Expose loading state
         login,
         register,
         logout,
@@ -49,7 +90,7 @@ export const AuthProvider = ({ children }) => {
         resetPassword,
       }}
     >
-      {children}
+      {!loading && children} {/* Only render children when auth state is determined */}
     </AuthContext.Provider>
   );
 };

@@ -1,9 +1,13 @@
-// src/pages/ResetPassword.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
-import { FaEnvelope, FaArrowLeft, FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa';
+import {
+  FaEnvelope,
+  FaArrowLeft,
+  FaCheckCircle,
+  FaExclamationTriangle,
+} from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 const ResetPassword = () => {
@@ -23,7 +27,7 @@ const ResetPassword = () => {
       setIsSubmitted(true);
     } catch (err) {
       console.error('Password reset error:', err);
-      setError(getFriendlyError(err.code));
+      setError(getFriendlyError(err?.code));
     } finally {
       setLoading(false);
     }
@@ -32,13 +36,13 @@ const ResetPassword = () => {
   const getFriendlyError = (errorCode) => {
     switch (errorCode) {
       case 'auth/invalid-email':
-        return 'Please enter a valid email address';
+        return 'Please enter a valid email address.';
       case 'auth/user-not-found':
-        return 'No account found with this email';
+        return 'No account found with this email.';
       case 'auth/too-many-requests':
-        return 'Too many attempts. Please try again later';
+        return 'Too many attempts. Please try again later.';
       default:
-        return 'Failed to send reset email. Please try again';
+        return 'Failed to send reset email. Please try again.';
     }
   };
 
@@ -53,9 +57,9 @@ const ResetPassword = () => {
           <div className="mb-6 p-4 bg-green-50 text-green-700 rounded-lg">
             <FaCheckCircle className="mx-auto text-4xl mb-3" />
             <h2 className="text-xl font-semibold mb-2">Check your email</h2>
-            <p>We've sent a password reset link to {email}</p>
+            <p>We&apos;ve sent a password reset link to <strong>{email}</strong>.</p>
             <p className="text-sm mt-2 text-green-600">
-              If you don't see it, check your spam folder.
+              If you don&apos;t see it, check your spam folder.
             </p>
           </div>
           <button

@@ -1,11 +1,14 @@
-<<<<<<< HEAD
-import { useState } from 'react';
-=======
 import React, { useState } from 'react';
->>>>>>> df5358023ecca555f414de334c9ad24adfb8740a
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowLeft } from 'react-icons/fa';
+import {
+  FaUser,
+  FaEnvelope,
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+  FaArrowLeft,
+} from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 const Register = () => {
@@ -31,14 +34,14 @@ const Register = () => {
       setMessage('Registration successful! Redirecting to login...');
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="w-full max-w-md mx-auto mt-20 p-6"
@@ -49,7 +52,7 @@ const Register = () => {
       </div>
 
       {error && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm"
@@ -59,7 +62,7 @@ const Register = () => {
       )}
 
       {message && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-4 p-3 bg-green-50 text-green-600 rounded-lg text-sm"
@@ -98,7 +101,7 @@ const Register = () => {
         <div className="relative">
           <FaLock className="absolute left-3 top-3.5 text-gray-400" />
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full pl-10 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"

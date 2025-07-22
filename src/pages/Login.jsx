@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -13,14 +12,15 @@ import {
   FaFacebook,
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-=======
-import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
->>>>>>> df5358023ecca555f414de334c9ad24adfb8740a
 
 const Login = () => {
-  const { login, signInWithGoogle, signInWithGithub, signInWithFacebook, resetPassword } = useAuth();
+  const {
+    login,
+    signInWithGoogle,
+    signInWithGithub,
+    signInWithFacebook,
+    resetPassword,
+  } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -33,9 +33,8 @@ const Login = () => {
     e.preventDefault();
     setError('');
     setLoading(true);
-    
+
     try {
-<<<<<<< HEAD
       const userCredential = await login(email, password);
       const user = userCredential.user;
 
@@ -45,9 +44,6 @@ const Login = () => {
         return;
       }
 
-=======
-      await login(email, password);
->>>>>>> df5358023ecca555f414de334c9ad24adfb8740a
       navigate('/');
     } catch (err) {
       setError(err.message || 'Login failed.');
@@ -58,9 +54,8 @@ const Login = () => {
   const handleSocialLogin = async (provider) => {
     setError('');
     setLoading(true);
-    
+
     try {
-<<<<<<< HEAD
       let userCredential;
       switch (provider) {
         case 'Google':
@@ -76,10 +71,8 @@ const Login = () => {
           throw new Error('Unsupported provider');
       }
 
-      // Optionally check email verification for social providers if needed
-=======
-      await signInWithGoogle();
->>>>>>> df5358023ecca555f414de334c9ad24adfb8740a
+      // Optional: check email verification if needed here
+
       navigate('/');
     } catch (err) {
       setError(err.message || `${provider} sign-in failed.`);
@@ -99,7 +92,7 @@ const Login = () => {
       </div>
 
       {error && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm"
