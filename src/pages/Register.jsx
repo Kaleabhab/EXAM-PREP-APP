@@ -1,4 +1,3 @@
-// pages/Register.jsx
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -19,8 +18,8 @@ const Register = () => {
 
     try {
       await register(email, password);
-      setMessage('Verification email sent! Please check your inbox.');
-      setTimeout(() => navigate('/login'), 3000);
+      setMessage('Registration successful! Redirecting to login...');
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
       setError(err.message);
     }

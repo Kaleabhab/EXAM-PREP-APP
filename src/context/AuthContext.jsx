@@ -8,7 +8,6 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   sendPasswordResetEmail,
-  sendEmailVerification,
 } from 'firebase/auth';
 import { auth } from '../firebase';
 
@@ -27,13 +26,8 @@ export const AuthProvider = ({ children }) => {
   const login = (email, password) =>
     signInWithEmailAndPassword(auth, email, password);
 
-  const register = async (email, password) => {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    await sendEmailVerification(userCredential.user, {
-      url: 'http://localhost:5173/reset-password', // ✅ Match Firebase template setting
-    });
-    return userCredential;
-  };
+  const register = (email, password) =>
+    createUserWithEmailAndPassword(auth, email, password);
 
   const logout = () => signOut(auth);
 
