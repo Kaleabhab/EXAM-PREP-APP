@@ -67,6 +67,7 @@ const Navbar = () => {
     { path: "/courses", name: "Courses", icon: <FiBook className="mr-2" /> },
     { path: "/quizzes", name: "Quizzes", icon: <FiAward className="mr-2" /> },
     { path: "/progress", name: "Progress", icon: <FiBarChart2 className="mr-2" /> },
+    { path: "/results", name: "Results", icon: <FiBarChart2 className="mr-2" /> },
     
   ];
 
@@ -163,7 +164,7 @@ const Navbar = () => {
                   >
                     <img
                       src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
-                        user.name || "User"
+                        user.displayName || "User"
                       )}&background=0D8ABC&color=fff`}
                       alt="User avatar"
                       className="w-8 h-8 rounded-full border-2 border-blue-500 dark:border-blue-400"

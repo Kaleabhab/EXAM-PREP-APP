@@ -13,6 +13,7 @@ import Results from '../pages/Results';
 import Profile from '../pages/Profile';
 import Courses from '../pages/Courses';
 import Progress from '../pages/Progress';
+import Settings from '../pages/Settings';
 
 import PrivateRoute from './PrivateRoute';
 
@@ -40,6 +41,8 @@ const AppRoutes = () => (
         <Route path="/results" element={<Results />} />
         <Route path="/progress" element={<Progress />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/quiz" element={<Quiz />} />
+        <Route path="/settings" element={<Settings /> } />
       </Route>
     </Routes>
   </Router>

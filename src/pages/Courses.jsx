@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import SubjectCard from '../components/SubjectCard';
+import { useNavigate } from 'react-router-dom';
 
 const courses = [
   {
@@ -9,7 +10,8 @@ const courses = [
     description: "Build your first website with HTML, CSS & JavaScript",
     level: "Beginner",
     icon: "🌐",
-    color: "blue"
+    color: "blue",
+    route: "/quiz"
   },
   {
     id: 2,
@@ -17,7 +19,8 @@ const courses = [
     description: "Master components, hooks, and state management",
     level: "Intermediate",
     icon: "⚛️",
-    color: "purple"
+    color: "purple",
+    route: ""
   },
   {
     id: 3,
@@ -25,7 +28,8 @@ const courses = [
     description: "Deep dive into ES6+ and advanced concepts",
     level: "Advanced",
     icon: "📜",
-    color: "orange"
+    color: "orange",
+    route: ""
   },
   {
     id: 4,
@@ -33,7 +37,8 @@ const courses = [
     description: "Create beautiful, intuitive interfaces",
     level: "Beginner",
     icon: "🎨",
-    color: "green"
+    color: "green",
+    route: ""
   },
   {
     id: 5,
@@ -41,7 +46,8 @@ const courses = [
     description: "Build robust server applications",
     level: "Intermediate",
     icon: "🔙",
-    color: "pink"
+    color: "pink",
+    route: ""
   },
   {
     id: 6,
@@ -49,12 +55,15 @@ const courses = [
     description: "Learn SQL and relational databases",
     level: "Intermediate",
     icon: "🗃️",
-    color: "indigo"
+    color: "indigo",
+    route: ""
   },
 ];
 
 const Courses = () => {
   const [activeFilter, setActiveFilter] = useState('All');
+
+  const navigate = useNavigate(); 
   
   const filters = ['All', 'Beginner', 'Intermediate', 'Advanced'];
   
@@ -104,7 +113,7 @@ const Courses = () => {
               description={course.description}
               icon={course.icon}
               level={course.level}
-              onClick={() => console.log(`Selected ${course.title}`)}
+               onClick={() => navigate(course.route)}
             />
           ))}
         </motion.div>

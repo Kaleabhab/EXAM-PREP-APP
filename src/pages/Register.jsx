@@ -18,27 +18,35 @@ const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setMessage('');
-    setLoading(true);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+  setMessage('');
 
-    try {
-      await register(email, password);
-      setMessage('Registration successful! Redirecting to login...');
-      setTimeout(() => navigate('/login'), 2000);
-    } catch (err) {
-      setError(err.message || 'Registration failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (password !== confirmPassword) {
+    setError('Passwords do not match.');
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    await register(name, email, password); // make sure your `register()` accepts name
+    setMessage('Registration successful! Redirecting to login...');
+    setTimeout(() => navigate('/login'), 2000);
+  } catch (err) {
+    setError(err.message || 'Registration failed. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <motion.div
@@ -119,6 +127,30 @@ const Register = () => {
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
+
+        {/* Confirm Password Input */}
+<div className="relative">
+  <FaLock className="absolute left-3 top-3.5 text-gray-400" />
+  <input
+    type={showPassword ? 'text' : 'password'}
+    value={confirmPassword}
+    onChange={(e) => setConfirmPassword(e.target.value)}
+    className="w-full pl-10 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+    placeholder="Confirm password"
+    required
+    minLength="6"
+    disabled={loading}
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-3 top-3.5 text-gray-500 hover:text-gray-700"
+    disabled={loading}
+  >
+    {showPassword ? <FaEyeSlash /> : <FaEye />}
+  </button>
+</div>
+
 
         <motion.button
           whileHover={{ scale: 1.02 }}

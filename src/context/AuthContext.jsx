@@ -9,6 +9,8 @@ import {
   sendPasswordResetEmail,
 } from 'firebase/auth';
 import { auth } from '../firebase';
+import { updateProfile } from 'firebase/auth';
+
 
 export const AuthContext = createContext();
 
@@ -44,10 +46,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (email, password) => {
+  const register = async ( name, email, password) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      localStorage.setItem('userEmail', email);
+
+      await updateProfile(userCredential.user, {
+        displayName: name,
+      });
+      //await sendEmailVerification(userCredential.user);
+
+      localStorage.setItem('userEmail', email, 'userName', name);
       return userCredential;
     } catch (error) {
       throw error;

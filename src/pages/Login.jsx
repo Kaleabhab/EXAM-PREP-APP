@@ -37,12 +37,12 @@ const Login = () => {
     try {
       const userCredential = await login(email, password);
       const user = userCredential.user;
-
-      if (!user.emailVerified) {
+{/* if (!user.emailVerified) {
         setError('Please verify your email before logging in.');
         setLoading(false);
         return;
-      }
+      }*/}
+      
 
       navigate('/');
     } catch (err) {
