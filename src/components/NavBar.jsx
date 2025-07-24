@@ -308,6 +308,7 @@ const Navbar = () => {
                     </NavLink>
                   ))}
                   {user && (
+                    <>
                     <NavLink
                       to="/profile"
                       className={mobileNavLinkClass}
@@ -315,7 +316,18 @@ const Navbar = () => {
                       <FiUser className="mr-2" />
                       Profile
                     </NavLink>
+                    <NavLink
+                      to="/settings"
+                      className={mobileNavLinkClass}
+                    >
+                      <FiSettings className="mr-2" />
+                      Settings
+                    </NavLink>
+                    </>
+                    
+                    
                   )}
+                  
                 </nav>
 
                 {/* Bottom Actions */}
