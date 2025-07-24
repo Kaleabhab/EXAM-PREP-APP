@@ -11,7 +11,8 @@ const courses = [
     level: "Beginner",
     icon: "🌐",
     color: "blue",
-    route: "/quiz"
+    route: "/courses/1/chapters",
+    chapters: ["Intro to HTML", "Styling with CSS", "JavaScript Basics"]
   },
   {
     id: 2,
@@ -20,7 +21,8 @@ const courses = [
     level: "Intermediate",
     icon: "⚛️",
     color: "purple",
-    route: ""
+    route: "/courses/2/chapters",
+    chapters: ["JSX & Components", "React Hooks", "State Management"]
   },
   {
     id: 3,
@@ -29,7 +31,8 @@ const courses = [
     level: "Advanced",
     icon: "📜",
     color: "orange",
-    route: ""
+    route: "/courses/3/chapters",
+    chapters: ["ES6+", "Async JS", "Design Patterns"]
   },
   {
     id: 4,
@@ -38,7 +41,8 @@ const courses = [
     level: "Beginner",
     icon: "🎨",
     color: "green",
-    route: ""
+    route: "/courses/4/chapters",
+    chapters: ["UX Principles", "Wireframing", "Design Systems"]
   },
   {
     id: 5,
@@ -47,7 +51,8 @@ const courses = [
     level: "Intermediate",
     icon: "🔙",
     color: "pink",
-    route: ""
+    route: "/courses/5/chapters",
+    chapters: ["Node Basics", "Express.js", "APIs & Middleware"]
   },
   {
     id: 6,
@@ -56,7 +61,8 @@ const courses = [
     level: "Intermediate",
     icon: "🗃️",
     color: "indigo",
-    route: ""
+    route: "/courses/6/chapters",
+    chapters: ["SQL Basics", "Normalization", "Joins & Queries"]
   },
 ];
 
