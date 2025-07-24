@@ -68,7 +68,6 @@ const courses = [
 
 const Courses = () => {
   const [activeFilter, setActiveFilter] = useState('All');
-
   const navigate = useNavigate(); 
   
   const filters = ['All', 'Beginner', 'Intermediate', 'Advanced'];
@@ -113,15 +112,15 @@ const Courses = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {filteredCourses.map((course) => (
-            <SubjectCard
-              key={course.id}
-              title={course.title}
-              description={course.description}
-              icon={course.icon}
-              level={course.level}
-               onClick={() => navigate(course.route)}
-            />
-          ))}
+  <SubjectCard
+    key={course.id}
+    title={course.title}
+    description={course.description}
+    icon={course.icon}
+    level={course.level}
+    courseId={course.id} // Required for navigation
+  />
+))}
         </motion.div>
       </div>
     </div>

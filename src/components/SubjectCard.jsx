@@ -1,5 +1,7 @@
+// src/components/SubjectCard.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const colorMap = {
   Beginner: 'from-green-400 to-blue-400',
@@ -13,15 +15,18 @@ const iconColors = {
   Advanced: 'text-orange-500'
 };
 
-const SubjectCard = ({ title, description, icon, level, onClick }) => {
+const SubjectCard = ({ title, description, icon, level, courseId }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/courses/${courseId}/chapters`);
+  };
+
   return (
-    <motion.div 
+    <motion.div
+      onClick={handleClick}
       className={`p-6 rounded-xl cursor-pointer bg-gradient-to-br ${colorMap[level]} shadow-lg hover:shadow-xl transition-all duration-300`}
-      onClick={onClick}
-      whileHover={{ 
-        y: -8,
-        scale: 1.02
-      }}
+      whileHover={{ y: -8, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -42,18 +47,15 @@ const SubjectCard = ({ title, description, icon, level, onClick }) => {
             <p className="text-white/90 text-sm mt-2">{description}</p>
           </div>
         </div>
-        
-        <motion.div 
-          className="mt-4 flex justify-between items-center"
-          whileHover={{ x: 2 }}
-        >
+
+        <motion.div className="mt-4 flex justify-between items-center">
           <span className="text-white text-sm font-medium">Start Learning</span>
           <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="h-5 w-5 text-white" 
-              fill="none" 
-              viewBox="0 0 24 24" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
