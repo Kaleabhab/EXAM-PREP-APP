@@ -5,7 +5,7 @@ const courses = [
     description: "Learn how databases work and how to interact with them.",
     icon: "🗄️",
     level: "Beginner",
-    chapters: ["SQL Basics", "Normalization", "Joins & Queries"]
+    chapters: ["SQL Basics", "Normalization", "Joins & Queries" ]
   },
   {
     id: 2,

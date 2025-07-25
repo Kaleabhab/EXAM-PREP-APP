@@ -4,6 +4,7 @@ import QuestionCard from '../components/QuestionCard';
 import ProgressBar from '../components/ProgressBar';
 import Timer from '../components/Timer';
 import QuizSummaryCard from '../components/QuizSummaryCard';
+import quizData from '../data/quiz';
 
 const Quiz = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -13,18 +14,7 @@ const Quiz = () => {
   const [quizStarted, setQuizStarted] = useState(false);
 
   // Sample quiz data
-  const quizData = [
-    {
-      question: "What is 2 + 2?",
-      options: ['2', '3', '4', '5'],
-      correctAnswer: '4'
-    },
-    {
-      question: "What is the capital of France?",
-      options: ['London', 'Berlin', 'Paris', 'Madrid'],
-      correctAnswer: 'Paris'
-    }
-  ];
+  
 
   const handleSelectOption = (option) => {
     const newSelectedOptions = [...selectedOptions];

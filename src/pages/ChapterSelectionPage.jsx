@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiArrowLeft, FiBookOpen, FiChevronRight, FiClock, FiAward } from 'react-icons/fi';
 import courses from '../data/courses'; // Adjust path as needed
 
+//import { courses } from './Courses';
+
 const ChapterSelectionPage = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();

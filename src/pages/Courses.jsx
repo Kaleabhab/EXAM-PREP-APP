@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import SubjectCard from '../components/SubjectCard';
 import { useNavigate } from 'react-router-dom';
 
-const courses = [
+export const courses = [
   {
     id: 1,
     title: "Intro to Web Dev",
