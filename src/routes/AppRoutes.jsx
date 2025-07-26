@@ -16,6 +16,7 @@ import Progress from '../pages/Progress';
 import Exams from '../pages/Exams';
 import Settings from '../pages/Settings';
 import ChapterSelectionPage from '../pages/ChapterSelectionPage';
+import { ExamChapterSelectionPage } from '../pages/ChapterSelectionPage';
 import ChapterDisplayPage from "../pages/ChapterDisplayPage";
 
 import PrivateRoute from './PrivateRoute';
@@ -48,6 +49,7 @@ const AppRoutes = () => (
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/settings" element={<Settings /> } />
         <Route path="/courses/:courseId/chapters" element={<ChapterSelectionPage />} />
+                <Route path="/exams/:examId/units" element={<ExamChapterSelectionPage />} />
         <Route path="/courses/:courseId/chapters/:chapterIndex" element={<ChapterDisplayPage />} />
 
       </Route>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import SubjectCard from '../components/SubjectCard';
+//import SubjectCard from '../components/SubjectCard';
+import { ExamCard } from '../components/SubjectCard';
 import { useNavigate } from 'react-router-dom';
 
 export const exams = [
@@ -11,8 +12,8 @@ export const exams = [
     level: "Beginner",
     icon: "🌐",
     color: "blue",
-    route: "/courses/1/chapters",
-    chapters: ["Intro to HTML", "Styling with CSS", "JavaScript Basics"]
+    route: "/exams/1/chapters",
+    units: ["Intro to HTML", "Styling with CSS", "JavaScript Basics"]
   },
   {
     id: 2,
@@ -21,8 +22,8 @@ export const exams = [
     level: "Intermediate",
     icon: "⚛️",
     color: "purple",
-    route: "/courses/2/chapters",
-    chapters: ["JSX & Components", "React Hooks", "State Management"]
+    route: "/exams/2/chapters",
+    units: ["JSX & Components", "React Hooks", "State Management"]
   },
   {
     id: 3,
@@ -31,8 +32,8 @@ export const exams = [
     level: "Advanced",
     icon: "📜",
     color: "orange",
-    route: "/courses/3/chapters",
-    chapters: ["ES6+", "Async JS", "Design Patterns"]
+    route: "/exams/3/chapters",
+    units: ["ES6+", "Async JS", "Design Patterns"]
   },
   {
     id: 4,
@@ -41,8 +42,8 @@ export const exams = [
     level: "Beginner",
     icon: "🎨",
     color: "green",
-    route: "/courses/4/chapters",
-    chapters: ["UX Principles", "Wireframing", "Design Systems"]
+    route: "/exams/4/chapters",
+    units: ["UX Principles", "Wireframing", "Design Systems"]
   },
   {
     id: 5,
@@ -51,8 +52,8 @@ export const exams = [
     level: "Intermediate",
     icon: "🔙",
     color: "pink",
-    route: "/courses/5/chapters",
-    chapters: ["Node Basics", "Express.js", "APIs & Middleware"]
+    route: "/exams/5/chapters",
+    units: ["Node Basics", "Express.js", "APIs & Middleware"]
   },
   {
     id: 6,
@@ -61,8 +62,8 @@ export const exams = [
     level: "Intermediate",
     icon: "🗃️",
     color: "indigo",
-    route: "/courses/6/chapters",
-    chapters: ["SQL Basics", "Normalization", "Joins & Queries"]
+    route: "/exams/6/chapters",
+    units: ["SQL Basics", "Normalization", "Joins & Queries"]
   },
 ];
 
@@ -112,13 +113,13 @@ const Exams = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {filteredExams.map((exam) => (
-  <SubjectCard
+  <ExamCard
     key={exam.id}
     title={exam.title}
     description={exam.description}
     icon={exam.icon}
     level={exam.level}
-    courseId={exam.id} // Required for navigation
+    examId={exam.id} // Required for navigation
   />
 ))}
         </motion.div>
