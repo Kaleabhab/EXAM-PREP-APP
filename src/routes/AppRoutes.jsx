@@ -13,6 +13,7 @@ import Results from '../pages/Results';
 import Profile from '../pages/Profile';
 import Courses from '../pages/Courses';
 import Progress from '../pages/Progress';
+import Exams from '../pages/Exams';
 import Settings from '../pages/Settings';
 import ChapterSelectionPage from '../pages/ChapterSelectionPage';
 import ChapterDisplayPage from "../pages/ChapterDisplayPage";
@@ -43,6 +44,7 @@ const AppRoutes = () => (
         <Route path="/results" element={<Results />} />
         <Route path="/progress" element={<Progress />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="exams" element={<Exams /> } />
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/settings" element={<Settings /> } />
         <Route path="/courses/:courseId/chapters" element={<ChapterSelectionPage />} />

@@ -1,12 +1,17 @@
 const courses = [
-  {
+   
+    {
     id: 1,
     title: "Database Fundamentals",
     description: "Learn how databases work and how to interact with them.",
     icon: "🗄️",
     level: "Beginner",
+    //chapters: ["Intro to HTML", "Styling with CSS", "JavaScript Basics"]
     chapters: ["SQL Basics", "Normalization", "Joins & Queries" ]
   },
+    
+    
+  
   {
     id: 2,
     title: "Web Development",

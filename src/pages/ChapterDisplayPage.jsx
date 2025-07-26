@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useParams } from "react-router-dom";
 //import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+//import "pdfjs-dist/web/pdf_viewer.css";
+//import "react-pdf/dist/esm/Page/TextLayer.css";
+//import workerSrc from "pdfjs-dist/build/pdf.worker.entry";
+pdfjs.GlobalWorkerOptions.workerSrc = "/pdf-worker/pdf.worker.min.js";
+
 
 // Configure worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+//pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+//pdfjs.GlobalWorkerOptions.workerSrc = workerSrc; // 👈 Use local worker
 
 const ChapterDisplayPage = () => {
   const { courseId, chapterIndex } = useParams();
@@ -12,7 +18,8 @@ const ChapterDisplayPage = () => {
   const [pageNumber, setPageNumber] = useState(1);
 
   // Example: You can dynamically generate PDF path
-  const pdfPath = `/pdfs/course-${courseId}/chapter-${chapterIndex}.pdf`;
+ const pdfPath = `/pdfs/${courseId}/${chapterIndex}.pdf`;
+
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -26,7 +33,7 @@ const ChapterDisplayPage = () => {
 
   return (
     <div className="p-8 bg-white dark:bg-gray-900 text-black dark:text-white min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">Chapter {parseInt(chapterIndex) + 1}</h1>
+      <h1 className="text-2xl font-bold mb-4">Chapter  {chapterIndex} {/* {parseInt(chapterIndex) + 1} */} </h1>
 
       <div className="flex justify-center mb-4">
         <button

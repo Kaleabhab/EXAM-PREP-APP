@@ -105,7 +105,7 @@ const ChapterSelectionPage = () => {
           </h2>
           
           <AnimatePresence>
-            {chaptersWithDetails.map((chapter) => (
+            {chaptersWithDetails.map((chapter, index) => (
               <motion.div
                 key={chapter.id}
                 initial={{ opacity: 0, y: 10 }}
@@ -113,7 +113,8 @@ const ChapterSelectionPage = () => {
                 transition={{ duration: 0.3 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => navigate(`/course/${courseId}/chapter/${chapter.id}`)}
+                //onClick={() => navigate(`/course/${courseId}/chapter/${chapter.id}`)}
+                onClick={() => navigate(`/courses/${courseId}/chapters/${index + 1}`)}
                 className={`p-5 bg-white rounded-xl shadow-sm border border-gray-200 hover:border-blue-300 cursor-pointer transition-all ${
                   chapter.completed ? 'border-l-4 border-l-green-500' : ''
                 }`}

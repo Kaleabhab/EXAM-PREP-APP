@@ -13,7 +13,8 @@ import {
   FiBook,
   FiAward,
   FiBarChart2,
-  FiSettings
+  FiSettings,
+  FiClock
 } from "react-icons/fi";
 import { useTheme } from "../context/ThemeContext";
 import useAuth from "../hooks/useAuth";
@@ -67,6 +68,7 @@ const Navbar = () => {
     { path: "/courses", name: "Courses", icon: <FiBook className="mr-2" /> },
     { path: "/quizzes", name: "Quizzes", icon: <FiAward className="mr-2" /> },
     { path: "/progress", name: "Progress", icon: <FiBarChart2 className="mr-2" /> },
+    { path: "/exams", name: "Exams", icon: <FiClock className="mr-2" /> },
     { path: "/results", name: "Results", icon: <FiBarChart2 className="mr-2" /> },
   ];
 
