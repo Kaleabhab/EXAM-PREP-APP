@@ -68,12 +68,14 @@ export const ExamCard = ({ title, description, icon, level, examId }) => {
   );
 };
 
-const SubjectCard = ({ title, description, icon, level, courseId }) => {
+const SubjectCard = ({ title, description, icon, level, courseId, completed = 0, total = 1 }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/courses/${courseId}/chapters`);
   };
+
+  const progressPercentage = Math.round((completed / total) * 100);
 
   return (
     <motion.div
@@ -101,8 +103,34 @@ const SubjectCard = ({ title, description, icon, level, courseId }) => {
           </div>
         </div>
 
+
+
+         {/* Progress Bar Section */}
+        {total > 0 && (
+          <div className="mt-4">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-sm text-white/90 font-medium">
+                {completed} of {total} completed
+              </span>
+              <span className="text-sm text-white font-bold">
+                {progressPercentage}%
+              </span>
+            </div>
+            <div className="w-full bg-white/30 rounded-full h-3">
+              <div
+                className={`h-3 rounded-full ${completed === total ? 'bg-green-400' : 'bg-blue-400'}`}
+                style={{ width: `${progressPercentage}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        
+
         <motion.div className="mt-4 flex justify-between items-center">
-          <span className="text-white text-sm font-medium">Start Learning</span>
+         <span className="text-white text-sm font-medium">
+            {completed === total && total !== 0 ? 'Completed' : 'Start Learning'}
+          </span>
           <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"

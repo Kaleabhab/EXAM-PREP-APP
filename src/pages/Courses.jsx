@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import SubjectCard from '../components/SubjectCard';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
+import { FiAward, FiBook, FiCheckCircle, FiClock } from 'react-icons/fi';
 
 export const courses = [
   {
@@ -12,6 +14,8 @@ export const courses = [
     icon: "🌐",
     color: "blue",
     route: "/courses/1/chapters",
+    completed: 3,
+    total: 10,
     chapters: ["Intro to HTML", "Styling with CSS", "JavaScript Basics"]
   },
   {
@@ -22,6 +26,8 @@ export const courses = [
     icon: "⚛️",
     color: "purple",
     route: "/courses/2/chapters",
+    completed: 3,
+    total: 10,
     chapters: ["JSX & Components", "React Hooks", "State Management"]
   },
   {
@@ -32,6 +38,8 @@ export const courses = [
     icon: "📜",
     color: "orange",
     route: "/courses/3/chapters",
+    completed: 3,
+    total: 10,
     chapters: ["ES6+", "Async JS", "Design Patterns"]
   },
   {
@@ -42,6 +50,8 @@ export const courses = [
     icon: "🎨",
     color: "green",
     route: "/courses/4/chapters",
+    completed: 3,
+    total: 10,
     chapters: ["UX Principles", "Wireframing", "Design Systems"]
   },
   {
@@ -52,6 +62,8 @@ export const courses = [
     icon: "🔙",
     color: "pink",
     route: "/courses/5/chapters",
+    completed: 3,
+    total: 10,
     chapters: ["Node Basics", "Express.js", "APIs & Middleware"]
   },
   {
@@ -62,6 +74,8 @@ export const courses = [
     icon: "🗃️",
     color: "indigo",
     route: "/courses/6/chapters",
+    completed: 3,
+    total: 10,
     chapters: ["SQL Basics", "Normalization", "Joins & Queries"]
   },
 ];
@@ -76,9 +90,87 @@ const Courses = () => {
     ? courses 
     : courses.filter(course => course.level === activeFilter);
 
+     const totalCourses = courses.length;
+  const completedCourses = courses.filter(course => course.completed === course.total).length;
+  const inProgressCourses = totalCourses - completedCourses;
+  const overallProgress = Math.round(
+    courses.reduce((sum, course) => sum + (course.completed / course.total), 0) / 
+    totalCourses * 100
+  );
+  const { user } = useAuth();
+
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="max-w-7xl mx-auto">
+        
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-8 text-center"
+                >
+                  <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                    {user?.name ? `${user.name}'s` : "Your"} Learning Journey
+                  </h1>
+                  <p className="text-lg text-gray-600">
+                    Track your progress and celebrate your achievements
+                  </p>
+                </motion.div>
+        
+                {/* Stats Overview */}
+                <motion.div 
+                  className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div className="flex items-center">
+                      <div className="p-3 rounded-full bg-blue-50 text-blue-600 mr-4">
+                        <FiBook className="text-xl" />
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-sm">Total Courses</p>
+                        <p className="text-2xl font-bold">{totalCourses}</p>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div className="flex items-center">
+                      <div className="p-3 rounded-full bg-green-50 text-green-600 mr-4">
+                        <FiCheckCircle className="text-xl" />
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-sm">Completed</p>
+                        <p className="text-2xl font-bold">{completedCourses}</p>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div className="flex items-center">
+                      <div className="p-3 rounded-full bg-yellow-50 text-yellow-600 mr-4">
+                        <FiClock className="text-xl" />
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-sm">In Progress</p>
+                        <p className="text-2xl font-bold">{inProgressCourses}</p>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div className="flex items-center">
+                      <div className="p-3 rounded-full bg-purple-50 text-purple-600 mr-4">
+                        <FiAward className="text-xl" />
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-sm">Overall Progress</p>
+                        <p className="text-2xl font-bold">{overallProgress}%</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -119,6 +211,8 @@ const Courses = () => {
     icon={course.icon}
     level={course.level}
     courseId={course.id} // Required for navigation
+    completed={course.completedChapters || 0} // fallback to 0 if undefined
+    total={course.totalChapters || 1}         // avoid division by 0
   />
 ))}
         </motion.div>
