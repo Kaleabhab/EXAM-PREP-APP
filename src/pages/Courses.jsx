@@ -14,7 +14,7 @@ export const courses = [
     icon: "🌐",
     color: "blue",
     route: "/courses/1/chapters",
-    completed: 3,
+    completed: 10,
     total: 10,
     chapters: ["Intro to HTML", "Styling with CSS", "JavaScript Basics"]
   },
@@ -108,8 +108,8 @@ const Courses = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="mb-8 text-center"
                 >
-                  <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                    {user?.name ? `${user.name}'s` : "Your"} Learning Journey
+                  <h1 className="text-3xl md:text-4xl font-semibold text-blue-600 mb-2">
+                    {user?.displayName ? `${user.displayName}'s` : "Your"} Learning Journey
                   </h1>
                   <p className="text-lg text-gray-600">
                     Track your progress and celebrate your achievements
@@ -211,8 +211,8 @@ const Courses = () => {
     icon={course.icon}
     level={course.level}
     courseId={course.id} // Required for navigation
-    completed={course.completedChapters || 0} // fallback to 0 if undefined
-    total={course.totalChapters || 1}         // avoid division by 0
+    completed={course.completed || 0} // fallback to 0 if undefined
+    total={course.total || 1}         // avoid division by 0
   />
 ))}
         </motion.div>
