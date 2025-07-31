@@ -3,73 +3,16 @@ import { motion } from 'framer-motion';
 //import SubjectCard from '../components/SubjectCard';
 import { ExamCard } from '../components/SubjectCard';
 import { useNavigate } from 'react-router-dom';
+import exams from '../data/exams';
 
-export const exams = [
-  {
-    id: 1,
-    title: "Intro to Web Dev",
-    description: "Build your first website with HTML, CSS & JavaScript",
-    level: "Beginner",
-    icon: "🌐",
-    color: "blue",
-    route: "/exams/1/chapters",
-    units: ["Intro to HTML", "Styling with CSS", "JavaScript Basics"]
-  },
-  {
-    id: 2,
-    title: "React Fundamentals",
-    description: "Master components, hooks, and state management",
-    level: "Intermediate",
-    icon: "⚛️",
-    color: "purple",
-    route: "/exams/2/chapters",
-    units: ["JSX & Components", "React Hooks", "State Management"]
-  },
-  {
-    id: 3,
-    title: "JavaScript Mastery",
-    description: "Deep dive into ES6+ and advanced concepts",
-    level: "Advanced",
-    icon: "📜",
-    color: "orange",
-    route: "/exams/3/chapters",
-    units: ["ES6+", "Async JS", "Design Patterns"]
-  },
-  {
-    id: 4,
-    title: "UI/UX Design",
-    description: "Create beautiful, intuitive interfaces",
-    level: "Beginner",
-    icon: "🎨",
-    color: "green",
-    route: "/exams/4/chapters",
-    units: ["UX Principles", "Wireframing", "Design Systems"]
-  },
-  {
-    id: 5,
-    title: "Node.js Backend",
-    description: "Build robust server applications",
-    level: "Intermediate",
-    icon: "🔙",
-    color: "pink",
-    route: "/exams/5/chapters",
-    units: ["Node Basics", "Express.js", "APIs & Middleware"]
-  },
-  {
-    id: 6,
-    title: "Database Design",
-    description: "Learn SQL and relational databases",
-    level: "Intermediate",
-    icon: "🗃️",
-    color: "indigo",
-    route: "/exams/6/chapters",
-    units: ["SQL Basics", "Normalization", "Joins & Queries"]
-  },
-];
+
 
 const Exams = () => {
   const [activeFilter, setActiveFilter] = useState('All');
+  //const { examId } = useParams();
   const navigate = useNavigate(); 
+
+  //const exam = exams.find(c => c.id === parseInt(examId));
   
   const filters = ['All', 'Beginner', 'Intermediate', 'Advanced'];
   

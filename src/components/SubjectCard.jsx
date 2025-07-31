@@ -20,7 +20,7 @@ export const ExamCard = ({ title, description, icon, level, examId }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/exams/${examId}/units`);
+    navigate(`/exams/${examId}/years`);
   };
 
   return (

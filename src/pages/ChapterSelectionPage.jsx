@@ -2,7 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiArrowLeft, FiBookOpen, FiChevronRight, FiClock, FiAward } from 'react-icons/fi';
 import courses from '../data/courses'; // Adjust path as needed
-import { exams } from './Exams';
+//import { exams } from './Exams';
+import exams from '../data/exams';
 
 //import { courses } from './Courses';
 export const ExamChapterSelectionPage = () => {
