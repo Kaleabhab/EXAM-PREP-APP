@@ -9,7 +9,7 @@ import exams from '../data/exams';
 
 const Exams = () => {
   const [activeFilter, setActiveFilter] = useState('All');
-  //const { examId } = useParams();
+  
   const navigate = useNavigate(); 
 
   //const exam = exams.find(c => c.id === parseInt(examId));

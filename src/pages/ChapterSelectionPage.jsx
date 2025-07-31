@@ -115,7 +115,7 @@ export const ExamChapterSelectionPage = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 //onClick={() => navigate(`/course/${courseId}/chapter/${chapter.id}`)}
-                onClick={() => navigate(`/exams/${examId}/unit/${index + 1}`)}
+                onClick={() => navigate(`/exams/${examId}/year/${yearTitle}/unit/${index + 1}`)}
                 className={`p-5 bg-white rounded-xl shadow-sm border border-gray-200 hover:border-blue-300 cursor-pointer transition-all ${
                   unit.completed ? 'border-l-4 border-l-green-500' : ''
                 }`}

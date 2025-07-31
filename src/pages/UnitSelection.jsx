@@ -1,10 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiArrowLeft, FiBookOpen, FiChevronRight, FiClock, FiAward } from 'react-icons/fi';
-import exams from '../data/exams'; // Adjust path as needed
+import courses from '../data/courses'; // Adjust path as needed
+//import { exams } from './Exams';
+import exams from '../data/exams';
 
-const YearPage = () => {
-  const { examId, examyear } = useParams();
+//import { courses } from './Courses';
+export const unitSelectionPage = () => {
+  const { examId } = useParams();
   const navigate = useNavigate();
 
   const exam = exams.find(c => c.id === parseInt(examId));
@@ -31,18 +34,15 @@ const YearPage = () => {
         </div>
       </motion.div>
     );
-  }
+  };
 
-  // Generate year data
-  const yearsList = exam.years.map((year, index) => ({
+  // Sample chapter data with additional details
+  const chaptersList = exam.units.map((unit, index) => ({
     id: index + 1,
-    title: year,
-    duration: `${Math.floor(Math.random() * 30) + 15} min`,
-    completed: Math.random() > 0.7,
+    title: unit,
+    duration: `${Math.floor(Math.random() * 30) + 15} min`, // Random duration
+    completed: Math.random() > 0.7, // Random completion status
   }));
-
-  const completedYears = yearsList.filter(y => y.completed).length;
-  const progressPercent = (completedYears / yearsList.length) * 100;
 
   return (
     <motion.div
@@ -63,34 +63,36 @@ const YearPage = () => {
           <div>
             <div className="flex items-center mb-2">
               <span className="text-3xl mr-3">{exam.icon}</span>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{exam.title}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                {exam.title}
+              </h1>
             </div>
-            <p className="text-gray-600">
-              {exam.description || 'Master the fundamentals with this comprehensive exam'}
-            </p>
+            <p className="text-gray-600">{exam.description || 'Master the fundamentals with this comprehensive exam'}</p>
           </div>
         </div>
 
         {/* Progress Overview */}
         <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            <div className="mb-4 sm:mb-0 w-full sm:w-auto">
+            <div className="mb-4 sm:mb-0">
               <h3 className="text-lg font-semibold mb-1">Exam Progress</h3>
               <div className="w-full bg-gray-200 rounded-full h-2.5">
                 <div 
                   className="bg-blue-600 h-2.5 rounded-full" 
-                  style={{ width: `${progressPercent}%` }}
-                />
+                  style={{ width: `${(chaptersList.filter(c => c.completed).length / chaptersList.length) * 100}%` }}
+                ></div>
               </div>
             </div>
-            <div className="flex space-x-4 mt-4 sm:mt-0">
+            <div className="flex space-x-4">
               <div className="text-center">
                 <div className="text-sm text-gray-500">Chapters</div>
-                <div className="font-bold">{yearsList.length}</div>
+                <div className="font-bold">{chaptersList.length}</div>
               </div>
               <div className="text-center">
                 <div className="text-sm text-gray-500">Completed</div>
-                <div className="font-bold">{completedYears}</div>
+                <div className="font-bold">
+                  {chaptersList.filter(c => c.completed).length}
+                </div>
               </div>
             </div>
           </div>
@@ -102,26 +104,27 @@ const YearPage = () => {
             <FiBookOpen className="mr-2" />
             Course Chapters
           </h2>
-
+          
           <AnimatePresence>
-            {yearsList.map((year) => (
+            {chaptersList.map((unit, index) => (
               <motion.div
-                key={year.id}
+                key={unit.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => navigate(`/exams/${examId}/year/${year.title}`)} // ✅ FIXED
+                //onClick={() => navigate(`/course/${courseId}/chapter/${chapter.id}`)}
+                onClick={() => navigate(`/exams/${examId}/year/${yearTitle}/unit/${index + 1}`)}
                 className={`p-5 bg-white rounded-xl shadow-sm border border-gray-200 hover:border-blue-300 cursor-pointer transition-all ${
-                  year.completed ? 'border-l-4 border-l-green-500' : ''
+                  unit.completed ? 'border-l-4 border-l-green-500' : ''
                 }`}
               >
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <div className="flex items-center mb-1">
-                      <h3 className="font-medium text-lg mr-2">{year.title}</h3>
-                      {year.completed && (
+                      <h3 className="font-medium text-lg mr-2">{unit.title}</h3>
+                      {unit.completed && (
                         <span className="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded-full flex items-center">
                           <FiAward className="mr-1" /> Completed
                         </span>
@@ -129,7 +132,7 @@ const YearPage = () => {
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <FiClock className="mr-1" />
-                      <span>{year.duration}</span>
+                      <span>{unit.duration}</span>
                     </div>
                   </div>
                   <FiChevronRight className="text-gray-400" />
@@ -139,10 +142,10 @@ const YearPage = () => {
           </AnimatePresence>
         </div>
 
-        {/* Actions */}
+        {/* Course Actions */}
         <div className="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
           <button
-            onClick={() => navigate(`/exams/${examId}/year/${yearsList[0]?.title}`)} // ✅ FIXED
+            onClick={() => navigate(`/exam/${examId}/unit`)}
             className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center"
           >
             Start First Chapter
@@ -157,6 +160,5 @@ const YearPage = () => {
       </div>
     </motion.div>
   );
-};
 
-export default YearPage;
+};
