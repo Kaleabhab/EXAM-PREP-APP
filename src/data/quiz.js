@@ -1,13 +1,21 @@
 const quizData = [
     {
+      subject: "",
+      year: "",
+      chapter: "",
       question: "What is 2 + 2?",
-      options: ['2', '3', '4', '5'],
-      correctAnswer: '4'
+      options: ['7', '3', '4', '5'],
+      correctAnswer: '2',
+      explanation: ""
     },
     {
+      subject: "",
+      year: "",
+      chapter: "",
       question: "What is the capital of France?",
       options: ['London', 'Berlin', 'Paris', 'Madrid'],
-      correctAnswer: 'Paris'
+      correctAnswer: '2',
+      explanation: ""
     }
   ];
 

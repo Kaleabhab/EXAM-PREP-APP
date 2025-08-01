@@ -7,7 +7,7 @@ import exams from '../data/exams';
 
 //import { courses } from './Courses';
 export const ExamChapterSelectionPage = () => {
-  const { examId } = useParams();
+  const { examId, yearTitle } = useParams();
   const navigate = useNavigate();
 
   const exam = exams.find(c => c.id === parseInt(examId));

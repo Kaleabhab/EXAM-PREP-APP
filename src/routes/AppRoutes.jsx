@@ -20,6 +20,8 @@ import { ExamChapterSelectionPage } from '../pages/ChapterSelectionPage';
 import YearPage from '../pages/YearSelection';
 //import UnitSelectionPage from '../pages/UnitSelection';
 //import unitSelectionPage from '../pages/UnitSelection';
+import UnitSelectionPage from '../pages/UnitSelection';
+import Question from '../pages/QuestionPage';
 import ChapterDisplayPage from "../pages/ChapterDisplayPage";
 
 import PrivateRoute from './PrivateRoute';
@@ -53,7 +55,9 @@ const AppRoutes = () => (
         <Route path="/settings" element={<Settings /> } />
         <Route path="/courses/:courseId/chapters" element={<ChapterSelectionPage />} />
                 <Route path="/exams/:examId/years" element={<YearPage />} />
-                <Route path="/exams/:examId/year/:yearTitle" element={<ExamChapterSelectionPage />} />
+         {/* <Route path="/exams/:examId/year/:yearTitle" element={<ExamChapterSelectionPage />} /> */}    
+         <Route path="/exams/:examId/year/:yearTitle" element={<UnitSelectionPage />} />
+        <Route path="/exams/:examId/year/:year/unit/:unitIndex" element={<Question />} />
         <Route path="/courses/:courseId/chapters/:chapterIndex" element={<ChapterDisplayPage />} />
 
       </Route>
