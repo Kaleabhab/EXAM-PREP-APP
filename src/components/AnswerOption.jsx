@@ -1,35 +1,39 @@
 import React from 'react';
-import { CircularProgress } from '@nextui-org/progress';
+import { motion } from 'framer-motion';
 
-const ProgressBar = ({ current, total, color = 'primary' }) => {
-  const percent = Math.round((current / total) * 100);
-  
+const AnswerOption = ({ option, isSelected, onSelect, isCorrect, showResult }) => {
+
+  const getBackgroundColor = () => {
+    if (!showResult) return isSelected ? 'bg-blue-100 border-blue-400' : 'bg-white';
+    if (!isCorrect) return 'bg-green-100 border-green-400';
+    if (!isSelected && !isCorrect) return 'bg-red-100 border-red-400';
+    return 'bg-white';
+  };
+  const getTextColor = () => {
+    if (!showResult) return   'text-gray-800';
+    if (!isCorrect) return 'text-green-800';
+    if (!isSelected && !isCorrect) return 'text-red-800';
+    return 'text-gray-800';
+  };
   return (
-    <div className="flex items-center gap-4">
-      <CircularProgress
-        aria-label="Quiz progress"
-        size="lg"
-        value={percent}
-        color={color}
-        showValueLabel={true}
-        classNames={{
-          value: "text-lg font-bold"
-        }}
-      />
-      <div className="flex-1">
-        <div className="flex justify-between text-sm text-gray-600 mb-1">
-          <span>Progress</span>
-          <span>{current}/{total}</span>
+    <motion.div
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    className={` p-4 border-2 rounded-lg cursor-pointer transition-all ${getBackgroundColor()} ${getTextColor()} `}
+    onClick={onSelect}
+    >
+      <div className="flex items-center">
+        <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center
+        ${isSelected ? 'border-blue-500 bg-blue-500' : 'border-gray-300'}`}>
+          {isSelected && <div className="w-2 h-2 bg-white rounded-full"></div>}
         </div>
-        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500"
-            style={{ width: `${percent}%` }}
-          />
+        <span className='text-lg'>{option}</span>
         </div>
-      </div>
-    </div>
+
+
+    </motion.div>
+
   );
 };
 
-export default ProgressBar;
+export default AnswerOption

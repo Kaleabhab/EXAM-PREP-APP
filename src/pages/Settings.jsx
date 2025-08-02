@@ -1,21 +1,8 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  Card, 
-  CardHeader, 
-  CardBody, 
-  CardFooter, 
-  Button, 
-  Switch, 
-  Divider, 
-  Select, 
-  SelectItem,
-  Avatar
-} from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
   User, 
-  Lock, 
   Bell, 
   Moon, 
   Sun, 
@@ -24,10 +11,24 @@ import {
   HelpCircle, 
   AlertTriangle, 
   Mail,
-  LogOut
+  LogOut,
+  Edit3,
+  Key,
+  Link2,
+  HardDrive,
+  Trash2,
+  Palette,
+  Text,
+  Smartphone,
+  Clock
 } from 'lucide-react';
+import Button from '../components/common/Button';
+import Card from '../components/common/Card';
+import Switch from '../components/common/Switch';
+import Select from '../components/common/Select';
 
 const SettingsPage = () => {
+  const navigate = useNavigate();
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(true);
   const [examReminders, setExamReminders] = useState(false);
@@ -37,216 +38,233 @@ const SettingsPage = () => {
   const [language, setLanguage] = useState('english');
 
   const handleLogout = () => {
-    // Logout logic here
     console.log("User logged out");
   };
 
+  const themeOptions = [
+    { value: 'light', label: 'Light' },
+    { value: 'dark', label: 'Dark' },
+    { value: 'system', label: 'System' }
+  ];
+
+  const fontSizeOptions = [
+    { value: 'small', label: 'Small' },
+    { value: 'medium', label: 'Medium' },
+    { value: 'large', label: 'Large' }
+  ];
+
+  const languageOptions = [
+    { value: 'english', label: 'English' },
+    { value: 'spanish', label: 'Spanish' },
+    { value: 'french', label: 'French' },
+    { value: 'german', label: 'German' }
+  ];
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="max-w-2xl mx-auto p-4 space-y-4"
-    >
+    <div className="max-w-2xl mx-auto p-4 space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <Button isIconOnly variant="light" aria-label="Back">
+        <button 
+          onClick={() => navigate(-1)}
+          className="p-2 rounded-full hover:bg-blue-100/50 dark:hover:bg-blue-900/20 text-gray-700 dark:text-gray-300"
+        >
           <ArrowLeft size={20} />
-        </Button>
-        <h1 className="text-2xl font-bold">Settings</h1>
+        </button>
+        <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Settings
+        </h1>
       </div>
 
       {/* Account Settings */}
-      <motion.div
-        initial={{ y: 10 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.1 }}
+      <Card 
+        title="Account Settings" 
+        icon={User}
+        gradientFrom="from-indigo-50" 
+        gradientTo="to-purple-50"
       >
-        <Card className="p-4">
-          <CardHeader className="flex items-center gap-2 pb-2">
-            <User size={18} className="text-primary" />
-            <h2 className="font-semibold">Account Settings</h2>
-          </CardHeader>
-          <CardBody className="space-y-3">
-            <Button variant="light" fullWidth className="justify-start">
-              Edit Profile
-            </Button>
-            <Button variant="light" fullWidth className="justify-start">
-              Change Password
-            </Button>
-            <Button variant="light" fullWidth className="justify-start">
-              Manage Linked Accounts
-            </Button>
-          </CardBody>
-        </Card>
-      </motion.div>
+        <div className="space-y-2">
+          <Button 
+            onClick={() => navigate('/profile')} 
+            icon={Edit3}
+            variant="primary"
+          >
+            Edit Profile
+          </Button>
+
+          <Button icon={Key} variant="secondary">
+            Change Password
+          </Button>
+
+          <Button icon={Link2} variant="success">
+            Manage Linked Accounts
+          </Button>
+        </div>
+      </Card>
 
       {/* Notification Settings */}
-      <motion.div
-        initial={{ y: 10 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.2 }}
+      <Card 
+        title="Notification Preferences" 
+        icon={Bell}
+        gradientFrom="from-blue-50" 
+        gradientTo="to-cyan-50"
       >
-        <Card className="p-4">
-          <CardHeader className="flex items-center gap-2 pb-2">
-            <Bell size={18} className="text-primary" />
-            <h2 className="font-semibold">Notification Settings</h2>
-          </CardHeader>
-          <CardBody className="space-y-3">
-            <div className="flex justify-between items-center">
+        <div className="space-y-4">
+          <div className="flex justify-between items-center p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
+            <div className="flex items-center gap-3">
+              <Mail size={18} className="text-blue-500" />
               <span>Email Notifications</span>
-              <Switch isSelected={emailNotifications} onValueChange={setEmailNotifications} />
             </div>
-            <div className="flex justify-between items-center">
+            <Switch 
+              checked={emailNotifications}
+              onChange={() => setEmailNotifications(!emailNotifications)}
+              color="blue"
+            />
+          </div>
+
+          <div className="flex justify-between items-center p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
+            <div className="flex items-center gap-3">
+              <Smartphone size={18} className="text-cyan-500" />
               <span>Push Notifications</span>
-              <Switch isSelected={pushNotifications} onValueChange={setPushNotifications} />
             </div>
-            <div className="flex justify-between items-center">
+            <Switch 
+              checked={pushNotifications}
+              onChange={() => setPushNotifications(!pushNotifications)}
+              color="cyan"
+            />
+          </div>
+
+          <div className="flex justify-between items-center p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
+            <div className="flex items-center gap-3">
+              <Clock size={18} className="text-purple-500" />
               <span>Exam Reminders</span>
-              <Switch isSelected={examReminders} onValueChange={setExamReminders} />
             </div>
-          </CardBody>
-        </Card>
-      </motion.div>
+            <Switch 
+              checked={examReminders}
+              onChange={() => setExamReminders(!examReminders)}
+              color="purple"
+            />
+          </div>
+        </div>
+      </Card>
 
       {/* Appearance */}
-      <motion.div
-        initial={{ y: 10 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.3 }}
+      <Card 
+        title="Appearance" 
+        icon={Palette}
+        gradientFrom="from-violet-50" 
+        gradientTo="to-fuchsia-50"
       >
-        <Card className="p-4">
-          <CardHeader className="flex items-center gap-2 pb-2">
-            {theme === 'dark' ? (
-              <Moon size={18} className="text-primary" />
-            ) : (
-              <Sun size={18} className="text-primary" />
-            )}
-            <h2 className="font-semibold">Appearance</h2>
-          </CardHeader>
-          <CardBody className="space-y-4">
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Theme</label>
             <Select
-              label="Theme"
-              selectedKeys={[theme]}
+              value={theme}
               onChange={(e) => setTheme(e.target.value)}
-              startContent={theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
-            >
-              <SelectItem key="light" value="light">Light</SelectItem>
-              <SelectItem key="dark" value="dark">Dark</SelectItem>
-              <SelectItem key="system" value="system">System</SelectItem>
-            </Select>
+              options={themeOptions}
+              icon={theme === 'dark' ? Moon : Sun}
+              color="violet"
+            />
+          </div>
 
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Font Size</label>
             <Select
-              label="Font Size"
-              selectedKeys={[fontSize]}
+              value={fontSize}
               onChange={(e) => setFontSize(e.target.value)}
-            >
-              <SelectItem key="small" value="small">Small</SelectItem>
-              <SelectItem key="medium" value="medium">Medium</SelectItem>
-              <SelectItem key="large" value="large">Large</SelectItem>
-            </Select>
-          </CardBody>
-        </Card>
-      </motion.div>
+              options={fontSizeOptions}
+              icon={Text}
+              color="violet"
+            />
+          </div>
+        </div>
+      </Card>
 
       {/* Language */}
-      <motion.div
-        initial={{ y: 10 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.4 }}
+      <Card 
+        title="Language & Region" 
+        icon={Globe}
+        gradientFrom="from-teal-50" 
+        gradientTo="to-emerald-50"
       >
-        <Card className="p-4">
-          <CardHeader className="flex items-center gap-2 pb-2">
-            <Globe size={18} className="text-primary" />
-            <h2 className="font-semibold">Language</h2>
-          </CardHeader>
-          <CardBody>
-            <Select
-              label="Select Language"
-              selectedKeys={[language]}
-              onChange={(e) => setLanguage(e.target.value)}
-              startContent={<Globe size={18} />}
-            >
-              <SelectItem key="english" value="english">English</SelectItem>
-              <SelectItem key="spanish" value="spanish">Spanish</SelectItem>
-              <SelectItem key="french" value="french">French</SelectItem>
-            </Select>
-          </CardBody>
-        </Card>
-      </motion.div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Select Language</label>
+          <Select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            options={languageOptions}
+            icon={Globe}
+            color="teal"
+          />
+        </div>
+      </Card>
 
       {/* Privacy & Security */}
-      <motion.div
-        initial={{ y: 10 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.5 }}
+      <Card 
+        title="Privacy & Security" 
+        icon={Shield}
+        gradientFrom="from-amber-50" 
+        gradientTo="to-orange-50"
       >
-        <Card className="p-4">
-          <CardHeader className="flex items-center gap-2 pb-2">
-            <Shield size={18} className="text-primary" />
-            <h2 className="font-semibold">Privacy & Security</h2>
-          </CardHeader>
-          <CardBody className="space-y-3">
-            <div className="flex justify-between items-center">
+        <div className="space-y-4">
+          <div className="flex justify-between items-center p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
+            <div className="flex items-center gap-3">
+              <Shield size={18} className="text-amber-500" />
               <span>Two-Factor Authentication</span>
-              <Switch isSelected={twoFactorAuth} onValueChange={setTwoFactorAuth} />
             </div>
-            <Button variant="light" fullWidth className="justify-start">
-              Data Sharing Preferences
-            </Button>
-            <Button variant="light" fullWidth className="justify-start">
-              Clear Cache
-            </Button>
-          </CardBody>
-        </Card>
-      </motion.div>
+            <Switch 
+              checked={twoFactorAuth}
+              onChange={() => setTwoFactorAuth(!twoFactorAuth)}
+              color="amber"
+            />
+          </div>
+
+          <Button icon={HardDrive} variant="warning">
+            Data Sharing Preferences
+          </Button>
+
+          <Button icon={Trash2} variant="danger">
+            Clear Cache
+          </Button>
+        </div>
+      </Card>
 
       {/* Support */}
-      <motion.div
-        initial={{ y: 10 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.6 }}
+      <Card 
+        title="Support" 
+        icon={HelpCircle}
+        gradientFrom="from-green-50" 
+        gradientTo="to-lime-50"
       >
-        <Card className="p-4">
-          <CardHeader className="flex items-center gap-2 pb-2">
-            <HelpCircle size={18} className="text-primary" />
-            <h2 className="font-semibold">Support</h2>
-          </CardHeader>
-          <CardBody className="space-y-3">
-            <Button variant="light" fullWidth className="justify-start" startContent={<HelpCircle size={18} />}>
-              Help Center
-            </Button>
-            <Button variant="light" fullWidth className="justify-start" startContent={<AlertTriangle size={18} />}>
-              Report a Problem
-            </Button>
-            <Button variant="light" fullWidth className="justify-start" startContent={<Mail size={18} />}>
-              Contact Us
-            </Button>
-          </CardBody>
-        </Card>
-      </motion.div>
+        <div className="space-y-2">
+          <Button icon={HelpCircle} variant="success">
+            Help Center
+          </Button>
+
+          <Button icon={AlertTriangle} variant="info">
+            Report a Problem
+          </Button>
+
+          <Button icon={Mail} variant="success">
+            Contact Us
+          </Button>
+        </div>
+      </Card>
 
       {/* Log Out */}
-      <motion.div
-        initial={{ y: 10 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.7 }}
+      <Card 
+        gradientFrom="from-red-50" 
+        gradientTo="to-pink-50"
       >
-        <Card className="p-4">
-          <CardBody>
-            <Button 
-              color="danger" 
-              variant="light" 
-              fullWidth 
-              startContent={<LogOut size={18} />}
-              onClick={handleLogout}
-            >
-              Log Out
-            </Button>
-          </CardBody>
-        </Card>
-      </motion.div>
-    </motion.div>
+        <Button 
+          onClick={handleLogout}
+          icon={LogOut}
+          variant="danger"
+          className="w-full"
+        >
+          Log Out
+        </Button>
+      </Card>
+    </div>
   );
 };
 
