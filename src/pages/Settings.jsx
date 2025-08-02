@@ -6,6 +6,7 @@ import {
   Bell, 
   Moon, 
   Sun, 
+  Monitor,
   Globe, 
   Shield, 
   HelpCircle, 
@@ -22,6 +23,7 @@ import {
   Smartphone,
   Clock
 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
 import Switch from '../components/common/Switch';
@@ -29,11 +31,11 @@ import Select from '../components/common/Select';
 
 const SettingsPage = () => {
   const navigate = useNavigate();
+  const { theme, setTheme, setSystemTheme } = useTheme();
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(true);
   const [examReminders, setExamReminders] = useState(false);
   const [twoFactorAuth, setTwoFactorAuth] = useState(false);
-  const [theme, setTheme] = useState('system');
   const [fontSize, setFontSize] = useState('medium');
   const [language, setLanguage] = useState('english');
 
@@ -41,10 +43,18 @@ const SettingsPage = () => {
     console.log("User logged out");
   };
 
+  const handleThemeChange = (value) => {
+    if (value === 'system') {
+      setSystemTheme();
+    } else {
+      setTheme(value);
+    }
+  };
+
   const themeOptions = [
-    { value: 'light', label: 'Light' },
-    { value: 'dark', label: 'Dark' },
-    { value: 'system', label: 'System' }
+    { value: 'light', label: 'Light', icon: Sun },
+    { value: 'dark', label: 'Dark', icon: Moon },
+    { value: 'system', label: 'System', icon: Monitor }
   ];
 
   const fontSizeOptions = [
@@ -150,7 +160,7 @@ const SettingsPage = () => {
       {/* Appearance */}
       <Card 
         title="Appearance" 
-        icon={Palette}
+        icon={theme === 'dark' ? Moon : Sun}
         gradientFrom="from-violet-50" 
         gradientTo="to-fuchsia-50"
       >
@@ -159,10 +169,8 @@ const SettingsPage = () => {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Theme</label>
             <Select
               value={theme}
-              onChange={(e) => setTheme(e.target.value)}
+              onChange={handleThemeChange}
               options={themeOptions}
-              icon={theme === 'dark' ? Moon : Sun}
-              color="violet"
             />
           </div>
 
@@ -170,7 +178,7 @@ const SettingsPage = () => {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Font Size</label>
             <Select
               value={fontSize}
-              onChange={(e) => setFontSize(e.target.value)}
+              onChange={(value) => setFontSize(value)}
               options={fontSizeOptions}
               icon={Text}
               color="violet"
@@ -190,7 +198,7 @@ const SettingsPage = () => {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Select Language</label>
           <Select
             value={language}
-            onChange={(e) => setLanguage(e.target.value)}
+            onChange={(value) => setLanguage(value)}
             options={languageOptions}
             icon={Globe}
             color="teal"
