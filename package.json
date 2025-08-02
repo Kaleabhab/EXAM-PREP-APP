@@ -11,9 +11,11 @@
     "postinstall": "chmod +x node_modules/.bin/vite"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.6.11",
     "chart.js": "^4.5.0",
     "firebase": "^12.0.0",
-    "framer-motion": "^10.16.4",
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.536.0",
     "pdfjs-dist": "^5.3.93",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

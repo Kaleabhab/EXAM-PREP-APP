@@ -15,7 +15,7 @@ const exams = [
         unit: "Intro to HTML",
         question: "What is 2 + 2?",
         options: ["7", "3", "4", "5"],
-        correctAnswer: "2",
+        correctAnswer: "4",
         explanation: ""
       },
       {

@@ -11,53 +11,61 @@ const Question = () => {
   const { examId, year, unitIndex } = useParams();
   const parsedUnitIndex = parseInt(unitIndex, 10) - 1;
 
- const selectedExam = exams.find((exam) => exam.id === parseInt(examId, 10));
+  const selectedExam = exams.find((exam) => exam.id === parseInt(examId, 10));
 
   if (!selectedExam) {
-  return (
-    <div className="p-6 text-center text-red-600">
-      Invalid Exam ID.
-      <br />
-      <Link to="/exams" className="text-blue-600 underline mt-4 inline-block">
-        ⬅ Back to Exams
-      </Link>
-    </div>
-  );
-}
+    return (
+      <div className="p-6 text-center text-red-600">
+        Invalid Exam ID.
+        <br />
+        <Link to="/exams" className="text-blue-600 underline mt-4 inline-block">
+          ⬅ Back to Exams
+        </Link>
+      </div>
+    );
+  }
 
   const unitName = selectedExam.units?.[parsedUnitIndex];
 
-if (!unitName) {
-  return (
-    <div className="p-6 text-center text-red-600">
-      Invalid Unit Index.
-      <br />
-      <Link to={`/exams/${examId}/chapters/${year}`} className="text-blue-600 underline mt-4 inline-block">
-        ⬅ Back to Units
-      </Link>
-    </div>
-  );
-}
+  if (!unitName) {
+    return (
+      <div className="p-6 text-center text-red-600">
+        Invalid Unit Index.
+        <br />
+        <Link to={`/exams/${examId}/year/${year}`} className="text-blue-600 underline mt-4 inline-block">
+          ⬅ Back to Units
+        </Link>
+      </div>
+    );
+  }
 
-  const quizData = selectedExam.questions.filter(
-    (q) => q.year === year && q.unit === unitName
-  );
+  // Normalize quiz data to ensure consistent property names
+  const quizData = selectedExam.questions
+    .filter((q) => q.year === year && q.unit === unitName)
+    .map((q) => ({
+      ...q,
+      correctAnswer: q.correctAnswer || q.correctanswer // Handle both cases
+    }));
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [timeTaken, setTimeTaken] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
+  const [showAnswers, setShowAnswers] = useState(false);
+  const [revealedAnswers, setRevealedAnswers] = useState([]);
 
   const handleSelectOption = (option) => {
     const newSelectedOptions = [...selectedOptions];
     newSelectedOptions[currentQuestionIndex] = option;
     setSelectedOptions(newSelectedOptions);
+    setRevealedAnswers([...revealedAnswers, currentQuestionIndex]);
   };
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < quizData.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setShowAnswers(false);
     } else {
       setQuizCompleted(true);
     }
@@ -69,6 +77,8 @@ if (!unitName) {
     setQuizCompleted(false);
     setTimeTaken(0);
     setQuizStarted(true);
+    setShowAnswers(false);
+    setRevealedAnswers([]);
   };
 
   const calculateScore = () => {
@@ -77,7 +87,6 @@ if (!unitName) {
     }, 0);
   };
 
-  // 🛑 No questions found
   if (quizData.length === 0) {
     return (
       <div className="p-6 text-center">
@@ -93,7 +102,6 @@ if (!unitName) {
     );
   }
 
-  // ⏳ Show intro screen
   if (!quizStarted) {
     return (
       <motion.div
@@ -116,7 +124,6 @@ if (!unitName) {
     );
   }
 
-  // ✅ Quiz Complete
   if (quizCompleted) {
     return (
       <QuizSummaryCard
@@ -160,11 +167,18 @@ if (!unitName) {
         onSelect={handleSelectOption}
         currentQuestion={currentQuestionIndex + 1}
         totalQuestions={quizData.length}
-        correctAnswer={currentQuestion.correctanswer}
-        showResult={false}
+        correctAnswer={currentQuestion.correctAnswer}
+        showResult={showAnswers || quizCompleted || revealedAnswers.includes(currentQuestionIndex)}
       />
 
-      <div className="mt-6 flex justify-end">
+      <div className="mt-6 flex justify-between">
+        <button
+          onClick={() => setShowAnswers(!showAnswers)}
+          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
+        >
+          {showAnswers ? 'Hide Answer' : 'Show Answer'}
+        </button>
+        
         <button
           onClick={handleNextQuestion}
           disabled={!selectedOptions[currentQuestionIndex]}

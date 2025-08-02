@@ -15,6 +15,7 @@ import Courses from '../pages/Courses';
 import Progress from '../pages/Progress';
 import Exams from '../pages/Exams';
 import Settings from '../pages/Settings';
+import SettingsPage from '../pages/Settings';
 import ChapterSelectionPage from '../pages/ChapterSelectionPage';
 import { ExamChapterSelectionPage } from '../pages/ChapterSelectionPage';
 import YearPage from '../pages/YearSelection';
@@ -52,7 +53,7 @@ const AppRoutes = () => (
         <Route path="/profile" element={<Profile />} />
         <Route path="exams" element={<Exams /> } />
         <Route path="/quiz" element={<Quiz />} />
-        <Route path="/settings" element={<Settings /> } />
+        <Route path="/settings" element={<SettingsPage /> } />
         <Route path="/courses/:courseId/chapters" element={<ChapterSelectionPage />} />
                 <Route path="/exams/:examId/years" element={<YearPage />} />
          {/* <Route path="/exams/:examId/year/:yearTitle" element={<ExamChapterSelectionPage />} /> */}    
