@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import QuestionCard from '../components/QuestionCard';
@@ -6,6 +6,7 @@ import ProgressBar from '../components/ProgressBar';
 import Timer from '../components/Timer';
 import QuizSummaryCard from '../components/QuizSummaryCard';
 import exams from '../data/exams';
+import { p } from 'framer-motion/client';
 
 const Question = () => {
   const { examId, year, unitIndex } = useParams();
@@ -55,6 +56,35 @@ const Question = () => {
   const [showAnswers, setShowAnswers] = useState(false);
   const [revealedAnswers, setRevealedAnswers] = useState([]);
 
+
+  // New state to hold previous quiz result loaded from localStorage
+  const [previousResult, setPreviousResult] = useState(null);
+
+
+
+  // Load previous quiz result from localStorage on component mount or when unitName changes
+  useEffect(() => {
+    const savedResult = localStorage.getItem(`quizResult_${unitName}`);
+    if (savedResult) {
+      setPreviousResult(JSON.parse(savedResult));
+    }
+  }, [unitName]);
+
+  // Save quiz result to localStorage when quiz is completed
+  useEffect(() => {
+    if (quizCompleted) {
+      const resultData = {
+        title: `You finished the ${unitName} Quiz!`,
+        score: calculateScore(),
+        total: quizData.length,
+        timeTaken: timeTaken,
+        completedAt: new Date().toISOString()
+      };
+      localStorage.setItem(`quizResult_${unitName}`, JSON.stringify(resultData));
+      setPreviousResult(resultData); // Update state with the latest result
+    }
+  }, [quizCompleted]); // Runs when quizCompleted changes
+
   const handleSelectOption = (option) => {
     const newSelectedOptions = [...selectedOptions];
     newSelectedOptions[currentQuestionIndex] = option;
@@ -87,6 +117,10 @@ const Question = () => {
     }, 0);
   };
 
+  
+
+   
+
   if (quizData.length === 0) {
     return (
       <div className="p-6 text-center">
@@ -102,7 +136,7 @@ const Question = () => {
     );
   }
 
-  if (!quizStarted) {
+  if (!quizStarted && previousResult) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -110,14 +144,21 @@ const Question = () => {
         className="flex flex-col items-center justify-center min-h-screen p-4"
       >
         <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
-          <p className="text-gray-600 mb-6">
-            Test your knowledge from "{unitName}" ({year}). You'll have {quizData.length * 30} seconds!
+          <h2 className="text-2xl font-semibold mb-4">Previous Result</h2>
+          <p className="mb-2">
+            {previousResult.title}
+          </p>
+          <p className="mb-2">
+            Score: {previousResult.score} / {previousResult.total}
+          </p>
+          <p className="mb-6">
+            Time taken: {previousResult.timeTaken} seconds
           </p>
           <button
             onClick={() => setQuizStarted(true)}
             className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-bold text-lg hover:from-blue-600 hover:to-purple-600 transition-all"
           >
-            Start Quiz
+            Retry Quiz
           </button>
         </div>
       </motion.div>
@@ -125,6 +166,26 @@ const Question = () => {
   }
 
   if (quizCompleted) {
+
+    // Save result to localStorage
+  const resultData = {
+    title: `You finished the ${unitName} Quiz!`,
+    score: calculateScore(),
+    total: quizData.length,
+    timeTaken: timeTaken,
+    completedAt: new Date().toISOString()
+  };
+
+  localStorage.setItem(`quizResult_${unitName}`, JSON.stringify(resultData));
+
+  // After quiz completed and saved result in localStorage
+const savedDataJSON = localStorage.getItem(`quizCompletion_${examId}_${yearTitle}`);
+const savedData = savedDataJSON ? JSON.parse(savedDataJSON) : {};
+
+savedData[unitId] = true; // mark current unit completed
+
+localStorage.setItem(`quizCompletion_${examId}_${yearTitle}`, JSON.stringify(savedData));
+
     return (
       <QuizSummaryCard
         title={`You finished the ${unitName} Quiz!`}

@@ -1,13 +1,46 @@
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiArrowLeft, FiBookOpen, FiChevronRight, FiClock, FiAward } from 'react-icons/fi';
-import exams from '../data/exams'; // Adjust path as needed
+import exams from '../data/exams';
 
 const UnitSelectionPage = () => {
   const { examId, yearTitle } = useParams();
   const navigate = useNavigate();
 
   const exam = exams.find(c => c.id === parseInt(examId));
+
+  const [chaptersList, setChaptersList] = useState([]);
+
+  useEffect(() => {
+    if (!exam) {
+      setChaptersList([]);
+      return;
+    }
+
+    // Load completion data from localStorage
+    const savedDataJSON = localStorage.getItem(`quizCompletion_${examId}_${yearTitle}`);
+    const savedData = savedDataJSON ? JSON.parse(savedDataJSON) : {};
+
+    // Load results for each unit to calculate progress
+    const updatedChapters = exam.units.map((unit, index) => {
+      const unitId = index + 1;
+      const resultJSON = localStorage.getItem(`quizResult_${unit}`);
+      const result = resultJSON ? JSON.parse(resultJSON) : null;
+      
+      const progress = result ? (result.score / result.total) * 100 : 0;
+
+      return {
+        id: unitId,
+        title: unit,
+        duration: `${Math.floor(Math.random() * 30) + 15} min`,
+        completed: !!savedData[unitId],
+        progress: progress
+      };
+    });
+
+    setChaptersList(updatedChapters);
+  }, [exam, examId, yearTitle]);
 
   if (!exam) {
     return (
@@ -33,16 +66,8 @@ const UnitSelectionPage = () => {
     );
   }
 
-  // Generate unit list
-  const chaptersList = exam.units.map((unit, index) => ({
-    id: index + 1,
-    title: unit,
-    duration: `${Math.floor(Math.random() * 30) + 15} min`,
-    completed: Math.random() > 0.7,
-  }));
-
   const completedCount = chaptersList.filter(c => c.completed).length;
-  const progressPercent = (completedCount / chaptersList.length) * 100;
+  const progressPercent = chaptersList.length > 0 ? (completedCount / chaptersList.length) * 100 : 0;
 
   return (
     <motion.div
@@ -104,7 +129,7 @@ const UnitSelectionPage = () => {
           </h2>
 
           <AnimatePresence>
-            {chaptersList.map((unit, index) => (
+            {chaptersList.map((unit) => (
               <motion.div
                 key={unit.id}
                 initial={{ opacity: 0, y: 10 }}
@@ -113,7 +138,7 @@ const UnitSelectionPage = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() =>
-                  navigate(`/exams/${examId}/year/${yearTitle}/unit/${index + 1}`)
+                  navigate(`/exams/${examId}/year/${yearTitle}/unit/${unit.id}`)
                 }
                 className={`p-5 bg-white rounded-xl shadow-sm border border-gray-200 hover:border-blue-300 cursor-pointer transition-all ${
                   unit.completed ? 'border-l-4 border-l-green-500' : ''
@@ -129,9 +154,18 @@ const UnitSelectionPage = () => {
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center text-sm text-gray-500">
+                    <div className="flex items-center text-sm text-gray-500 mb-2">
                       <FiClock className="mr-1" />
                       <span>{unit.duration}</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-blue-500 h-2 rounded-full" 
+                        style={{ width: `${unit.progress}%` }}
+                      />
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {Math.round(unit.progress)}% complete
                     </div>
                   </div>
                   <FiChevronRight className="text-gray-400" />
