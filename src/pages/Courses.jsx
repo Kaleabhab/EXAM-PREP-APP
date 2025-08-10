@@ -28,7 +28,7 @@ const Courses = () => {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen py-12 px-4 sm:px-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800s">
       <div className="max-w-7xl mx-auto">
         
                 <motion.div
@@ -36,10 +36,10 @@ const Courses = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="mb-8 text-center"
                 >
-                  <h1 className="text-3xl md:text-4xl font-semibold text-blue-600 mb-2">
+                  <h1 className="text-3xl md:text-4xl font-semibold text-blue-600 mb-2 dark:text-blue-400">
                     {user?.displayName ? `${user.displayName}'s` : "Your"} Learning Journey
                   </h1>
-                  <p className="text-lg text-gray-600">
+                  <p className="text-lg text-gray-600 dark:text-gray-300">
                     Track your progress and celebrate your achievements
                   </p>
                 </motion.div>
@@ -51,9 +51,9 @@ const Courses = () => {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
                     <div className="flex items-center">
-                      <div className="p-3 rounded-full bg-blue-50 text-blue-600 mr-4">
+                      <div className="p-3 rounded-full bg-blue-50 text-blue-600 mr-4 dark:text-blue-400">
                         <FiBook className="text-xl" />
                       </div>
                       <div>
@@ -63,9 +63,9 @@ const Courses = () => {
                     </div>
                   </div>
         
-                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
                     <div className="flex items-center">
-                      <div className="p-3 rounded-full bg-green-50 text-green-600 mr-4">
+                      <div className="p-3 rounded-full bg-green-50 text-green-600 mr-4 dark:text-green-400">
                         <FiCheckCircle className="text-xl" />
                       </div>
                       <div>
@@ -75,9 +75,9 @@ const Courses = () => {
                     </div>
                   </div>
         
-                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
                     <div className="flex items-center">
-                      <div className="p-3 rounded-full bg-yellow-50 text-yellow-600 mr-4">
+                      <div className="p-3 rounded-full bg-yellow-50 text-yellow-600 mr-4 dark:text-yellow-400">
                         <FiClock className="text-xl" />
                       </div>
                       <div>
@@ -87,9 +87,9 @@ const Courses = () => {
                     </div>
                   </div>
         
-                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
                     <div className="flex items-center">
-                      <div className="p-3 rounded-full bg-purple-50 text-purple-600 mr-4">
+                      <div className="p-3 rounded-full bg-purple-50 text-purple-600 mr-4 dark:text-purple-400">
                         <FiAward className="text-xl" />
                       </div>
                       <div>
@@ -105,7 +105,7 @@ const Courses = () => {
           className="text-center mb-12"
         >
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Discover Our Courses</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto dark:text-gray-300">
             Interactive learning experiences for every skill level
           </p>
         </motion.div>
@@ -118,8 +118,8 @@ const Courses = () => {
               onClick={() => setActiveFilter(filter)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 activeFilter === filter
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md dark:shadow-lg'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
               }`}
             >
               {filter}
