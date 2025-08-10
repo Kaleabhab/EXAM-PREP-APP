@@ -5,7 +5,7 @@ import { FiArrowRight, FiAward, FiBook, FiBarChart2, FiCheckCircle, FiUsers } fr
 
 const HeroSection = () => {
     return (
-        <section className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 text-white py-28 px-6 overflow-hidden">
+        <section className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 text-white py-28 px-6 overflow-hidden dark:from-blue-800 dark:via-blue-700 dark:to-indigo-800">
         {/* Decorative elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-1/4 w-32 h-32 rounded-full bg-blue-400 filter blur-3xl"></div>

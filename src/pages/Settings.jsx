@@ -171,6 +171,7 @@ const SettingsPage = () => {
               value={theme}
               onChange={handleThemeChange}
               options={themeOptions}
+              ariaLabel="Theme selection"
             />
           </div>
 
@@ -180,8 +181,10 @@ const SettingsPage = () => {
               value={fontSize}
               onChange={(value) => setFontSize(value)}
               options={fontSizeOptions}
+
               icon={Text}
               color="violet"
+              ariaLabel="Font size selection"
             />
           </div>
         </div>

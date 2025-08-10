@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Avatar, Card, CardHeader, CardBody, CardFooter, Progress, Button, Badge, ScrollShadow } from '@nextui-org/react';
 import { Settings, Edit, Award, Book, Clock, LogOut } from 'lucide-react';
+import Header from '../components/common/Header';
 
 const ProfilePage = () => {
   // Sample user data
@@ -38,6 +39,11 @@ const ProfilePage = () => {
       className="max-w-3xl mx-auto p-4 space-y-6"
     >
       {/* Header */}
+
+      <Header title="My Profile" icon={<Settings size={20} />} />
+
+     { /*
+      
       <div className="flex justify-between items-center">
         <Button isIconOnly variant="light" aria-label="Back">
           ←
@@ -47,6 +53,9 @@ const ProfilePage = () => {
           <Settings size={20} />
         </Button>
       </div>
+      
+       */}
+      
 
       {/* Profile Section */}
       <Card className="p-6">

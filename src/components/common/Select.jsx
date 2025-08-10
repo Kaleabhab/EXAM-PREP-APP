@@ -6,6 +6,7 @@ const Select = ({
   options, 
   color = 'violet',
   className = '',
+  ariaLabel = 'Select an option', // ✅ Add this
 }) => {
   const colorClasses = {
     violet: 'focus:ring-violet-500 text-violet-500',
@@ -25,6 +26,7 @@ const Select = ({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        aria-label={ariaLabel} // ✅ important for accessibility
         className={`block w-full px-4 py-2 pr-10 bg-white/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg appearance-none focus:outline-none focus:ring-2 ${colorClasses[color]} ${className}`}
       >
         {options.map((option) => (

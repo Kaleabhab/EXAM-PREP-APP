@@ -21,15 +21,15 @@ const Exams = () => {
     : exams.filter(exam => exam.level === activeFilter);
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen py-12 px-4 sm:px-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Discover Our Courses</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4 dark:text-cyan-300">Discover Our Courses</h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto dark:text-gray-300">
             Interactive learning experiences for every skill level
           </p>
         </motion.div>
