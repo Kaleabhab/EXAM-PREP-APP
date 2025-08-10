@@ -6,11 +6,11 @@ import ProgressBar from '../components/ProgressBar';
 import Timer from '../components/Timer';
 import QuizSummaryCard from '../components/QuizSummaryCard';
 import exams from '../data/exams';
-import { p } from 'framer-motion/client';
 
 const Question = () => {
   const { examId, year, unitIndex } = useParams();
   const parsedUnitIndex = parseInt(unitIndex, 10) - 1;
+  const unitId = parsedUnitIndex + 1; // Unit ID for localStorage keys
 
   const selectedExam = exams.find((exam) => exam.id === parseInt(examId, 10));
 
@@ -45,7 +45,7 @@ const Question = () => {
     .filter((q) => q.year === year && q.unit === unitName)
     .map((q) => ({
       ...q,
-      correctAnswer: q.correctAnswer || q.correctanswer // Handle both cases
+      correctAnswer: q.correctAnswer || q.correctanswer, // Handle both cases
     }));
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -56,11 +56,8 @@ const Question = () => {
   const [showAnswers, setShowAnswers] = useState(false);
   const [revealedAnswers, setRevealedAnswers] = useState([]);
 
-
   // New state to hold previous quiz result loaded from localStorage
   const [previousResult, setPreviousResult] = useState(null);
-
-
 
   // Load previous quiz result from localStorage on component mount or when unitName changes
   useEffect(() => {
@@ -78,12 +75,21 @@ const Question = () => {
         score: calculateScore(),
         total: quizData.length,
         timeTaken: timeTaken,
-        completedAt: new Date().toISOString()
+        completedAt: new Date().toISOString(),
       };
+      // Save result per unit and per year
       localStorage.setItem(`quizResult_${unitName}`, JSON.stringify(resultData));
+      localStorage.setItem(`quizResult_${year}`, JSON.stringify(resultData));
+
+      // Mark unit as completed (using unitId)
+      const completionKey = `quizCompletion_${examId}_${year}`;
+      const savedData = JSON.parse(localStorage.getItem(completionKey) || '{}');
+      savedData[unitId] = true;
+      localStorage.setItem(completionKey, JSON.stringify(savedData));
+
       setPreviousResult(resultData); // Update state with the latest result
     }
-  }, [quizCompleted]); // Runs when quizCompleted changes
+  }, [quizCompleted, unitName, year, examId, unitId, timeTaken, quizData.length]); // Runs when quizCompleted changes
 
   const handleSelectOption = (option) => {
     const newSelectedOptions = [...selectedOptions];
@@ -117,10 +123,6 @@ const Question = () => {
     }, 0);
   };
 
-  
-
-   
-
   if (quizData.length === 0) {
     return (
       <div className="p-6 text-center">
@@ -145,15 +147,11 @@ const Question = () => {
       >
         <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
           <h2 className="text-2xl font-semibold mb-4">Previous Result</h2>
-          <p className="mb-2">
-            {previousResult.title}
-          </p>
+          <p className="mb-2">{previousResult.title}</p>
           <p className="mb-2">
             Score: {previousResult.score} / {previousResult.total}
           </p>
-          <p className="mb-6">
-            Time taken: {previousResult.timeTaken} seconds
-          </p>
+          <p className="mb-6">Time taken: {previousResult.timeTaken} seconds</p>
           <button
             onClick={() => setQuizStarted(true)}
             className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-bold text-lg hover:from-blue-600 hover:to-purple-600 transition-all"
@@ -166,26 +164,6 @@ const Question = () => {
   }
 
   if (quizCompleted) {
-
-    // Save result to localStorage
-  const resultData = {
-    title: `You finished the ${unitName} Quiz!`,
-    score: calculateScore(),
-    total: quizData.length,
-    timeTaken: timeTaken,
-    completedAt: new Date().toISOString()
-  };
-
-  localStorage.setItem(`quizResult_${unitName}`, JSON.stringify(resultData));
-
-  // After quiz completed and saved result in localStorage
-const savedDataJSON = localStorage.getItem(`quizCompletion_${examId}_${yearTitle}`);
-const savedData = savedDataJSON ? JSON.parse(savedDataJSON) : {};
-
-savedData[unitId] = true; // mark current unit completed
-
-localStorage.setItem(`quizCompletion_${examId}_${yearTitle}`, JSON.stringify(savedData));
-
     return (
       <QuizSummaryCard
         title={`You finished the ${unitName} Quiz!`}
@@ -200,11 +178,7 @@ localStorage.setItem(`quizCompletion_${examId}_${yearTitle}`, JSON.stringify(sav
   const currentQuestion = quizData[currentQuestionIndex];
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="max-w-2xl mx-auto p-4"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-2xl mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
         <Timer
           initialTime={quizData.length * 30}
@@ -216,10 +190,7 @@ localStorage.setItem(`quizCompletion_${examId}_${yearTitle}`, JSON.stringify(sav
         </div>
       </div>
 
-      <ProgressBar
-        currentQuestion={currentQuestionIndex + 1}
-        totalQuestions={quizData.length}
-      />
+      <ProgressBar currentQuestion={currentQuestionIndex + 1} totalQuestions={quizData.length} />
 
       <QuestionCard
         question={currentQuestion.question}
@@ -229,7 +200,9 @@ localStorage.setItem(`quizCompletion_${examId}_${yearTitle}`, JSON.stringify(sav
         currentQuestion={currentQuestionIndex + 1}
         totalQuestions={quizData.length}
         correctAnswer={currentQuestion.correctAnswer}
-        showResult={showAnswers || quizCompleted || revealedAnswers.includes(currentQuestionIndex)}
+        showResult={
+          showAnswers || quizCompleted || revealedAnswers.includes(currentQuestionIndex)
+        }
       />
 
       <div className="mt-6 flex justify-between">
@@ -239,7 +212,7 @@ localStorage.setItem(`quizCompletion_${examId}_${yearTitle}`, JSON.stringify(sav
         >
           {showAnswers ? 'Hide Answer' : 'Show Answer'}
         </button>
-        
+
         <button
           onClick={handleNextQuestion}
           disabled={!selectedOptions[currentQuestionIndex]}

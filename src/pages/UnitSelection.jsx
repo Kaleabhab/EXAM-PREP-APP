@@ -11,6 +11,7 @@ const UnitSelectionPage = () => {
   const exam = exams.find(c => c.id === parseInt(examId));
 
   const [chaptersList, setChaptersList] = useState([]);
+  const [totalProgress, setTotalProgress] = useState(0);
 
   useEffect(() => {
     if (!exam) {
@@ -22,7 +23,11 @@ const UnitSelectionPage = () => {
     const savedDataJSON = localStorage.getItem(`quizCompletion_${examId}_${yearTitle}`);
     const savedData = savedDataJSON ? JSON.parse(savedDataJSON) : {};
 
-    // Load results for each unit to calculate progress
+    // Calculate total progress
+    let totalScore = 0;
+    let maxPossibleScore = 0;
+    let completedCount = 0;
+
     const updatedChapters = exam.units.map((unit, index) => {
       const unitId = index + 1;
       const resultJSON = localStorage.getItem(`quizResult_${unit}`);
@@ -30,17 +35,35 @@ const UnitSelectionPage = () => {
       
       const progress = result ? (result.score / result.total) * 100 : 0;
 
+      // Check if unit is completed (score > 0 or saved in completion data)
+      const isCompleted = !!savedData[unitId] || (result && result.score > 0);
+      if (isCompleted) completedCount++;
+      
+      // Accumulate for total progress
+      if (result) {
+        totalScore += result.score;
+        maxPossibleScore += result.total;
+      }
+
       return {
         id: unitId,
         title: unit,
         duration: `${Math.floor(Math.random() * 30) + 15} min`,
-        completed: !!savedData[unitId],
+        completed: isCompleted,
         progress: progress
       };
     });
 
+    // Calculate overall progress
+    const overallProgress = maxPossibleScore > 0 ? (totalScore / maxPossibleScore) * 100 : 0;
+    setTotalProgress(overallProgress);
     setChaptersList(updatedChapters);
   }, [exam, examId, yearTitle]);
+
+  // Calculate completed count based on both completion data and quiz results
+  const completedCount = chaptersList.reduce((count, unit) => {
+    return count + (unit.completed ? 1 : 0);
+  }, 0);
 
   if (!exam) {
     return (
@@ -66,8 +89,7 @@ const UnitSelectionPage = () => {
     );
   }
 
-  const completedCount = chaptersList.filter(c => c.completed).length;
-  const progressPercent = chaptersList.length > 0 ? (completedCount / chaptersList.length) * 100 : 0;
+ // const completedCount = chaptersList.filter(c => c.completed).length;
 
   return (
     <motion.div
@@ -93,6 +115,7 @@ const UnitSelectionPage = () => {
             <p className="text-gray-600">
               {exam.description || 'Master the fundamentals with this comprehensive exam'}
             </p>
+            <p className="text-sm text-gray-500 mt-1">Year: {yearTitle}</p>
           </div>
         </div>
 
@@ -104,8 +127,11 @@ const UnitSelectionPage = () => {
               <div className="w-full bg-gray-200 rounded-full h-2.5">
                 <div
                   className="bg-blue-600 h-2.5 rounded-full"
-                  style={{ width: `${progressPercent}%` }}
+                  style={{ width: `${totalProgress}%` }}
                 />
+              </div>
+              <div className="text-sm text-gray-500 mt-1">
+                Overall progress: {Math.round(totalProgress)}%
               </div>
             </div>
             <div className="flex space-x-4 mt-4 sm:mt-0">

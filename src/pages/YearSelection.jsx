@@ -4,7 +4,7 @@ import { FiArrowLeft, FiBookOpen, FiChevronRight, FiClock, FiAward } from 'react
 import exams from '../data/exams';
 
 const YearPage = () => {
-  const { examId, yearTitle } = useParams();
+  const { examId } = useParams();
   const navigate = useNavigate();
 
   const exam = exams.find(c => c.id === parseInt(examId));
@@ -33,28 +33,40 @@ const YearPage = () => {
     );
   }
 
-  // Generate year data with progress
-  const yearsList = exam.years.map((year, index) => {
-    // Load completion data for this year
-    const savedDataJSON = localStorage.getItem(`quizCompletion_${examId}_${year}`);
-    const savedData = savedDataJSON ? JSON.parse(savedDataJSON) : {};
+  // Generate year data with accurate progress tracking
+  const yearsList = exam.years.map((year) => {
+    const completionKey = `quizCompletion_${examId}_${year}`;
+    const yearCompletionData = JSON.parse(localStorage.getItem(completionKey) || "{}");
     
-    // Calculate progress for this year
     const totalUnits = exam.units.length;
-    const completedUnits = Object.values(savedData).filter(Boolean).length;
-    const yearProgress = totalUnits > 0 ? (completedUnits / totalUnits) * 100 : 0;
+    let completedUnits = 0;
+    
+    // Count completed units for this year
+    exam.units.forEach((_, index) => {
+      const unitId = index + 1;
+      if (yearCompletionData[unitId]) {
+        completedUnits++;
+      }
+    });
+
+    const progress = totalUnits > 0 ? (completedUnits / totalUnits) * 100 : 0;
 
     return {
-      id: index + 1,
       title: year,
       duration: `${Math.floor(Math.random() * 30) + 15} min`,
-      completed: yearProgress === 100,
-      progress: yearProgress
+      completed: progress > 0, // Mark as completed if any progress
+      progress: progress,
+      totalUnits: totalUnits,
+      completedUnits: completedUnits
     };
   });
 
-  const completedYears = yearsList.filter(y => y.completed).length;
-  const progressPercent = (completedYears / yearsList.length) * 100;
+  // Calculate overall progress (weighted average)
+  const totalPossibleUnits = yearsList.reduce((sum, year) => sum + year.totalUnits, 0);
+  const totalCompletedUnits = yearsList.reduce((sum, year) => sum + year.completedUnits, 0);
+  const progressPercent = totalPossibleUnits > 0 
+    ? (totalCompletedUnits / totalPossibleUnits) * 100 
+    : 0;
 
   return (
     <motion.div
@@ -94,6 +106,9 @@ const YearPage = () => {
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
+              <div className="text-sm text-gray-500 mt-1">
+                {Math.round(progressPercent)}% complete ({totalCompletedUnits}/{totalPossibleUnits} units)
+              </div>
             </div>
             <div className="flex space-x-4 mt-4 sm:mt-0">
               <div className="text-center">
@@ -101,14 +116,14 @@ const YearPage = () => {
                 <div className="font-bold">{yearsList.length}</div>
               </div>
               <div className="text-center">
-                <div className="text-sm text-gray-500">Completed</div>
-                <div className="font-bold">{completedYears}</div>
+                <div className="text-sm text-gray-500">Started</div>
+                <div className="font-bold">{yearsList.filter(y => y.progress > 0).length}</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Chapters List */}
+        {/* Years List */}
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-gray-800 flex items-center">
             <FiBookOpen className="mr-2" />
@@ -116,9 +131,9 @@ const YearPage = () => {
           </h2>
 
           <AnimatePresence>
-            {yearsList.map((year) => (
+            {yearsList.map((year, index) => (
               <motion.div
-                key={year.id}
+                key={index}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
@@ -135,7 +150,7 @@ const YearPage = () => {
                       <h3 className="font-medium text-lg mr-2">{year.title}</h3>
                       {year.completed && (
                         <span className="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded-full flex items-center">
-                          <FiAward className="mr-1" /> Completed
+                          <FiAward className="mr-1" /> In Progress
                         </span>
                       )}
                     </div>
@@ -150,7 +165,7 @@ const YearPage = () => {
                       />
                     </div>
                     <div className="text-xs text-gray-500 mt-1">
-                      {Math.round(year.progress)}% complete
+                      {Math.round(year.progress)}% complete ({year.completedUnits}/{year.totalUnits} units)
                     </div>
                   </div>
                   <FiChevronRight className="text-gray-400" />
