@@ -57,7 +57,7 @@ const AppRoutes = () => (
         <Route path="/courses/:courseId/chapters" element={<ChapterSelectionPage />} />
                 <Route path="/exams/:examId/years" element={<YearPage />} />
          {/* <Route path="/exams/:examId/year/:yearTitle" element={<ExamChapterSelectionPage />} /> */}    
-         <Route path="/exams/:examId/year/:yearTitle" element={<UnitSelectionPage />} />
+         <Route path="/exams/:examId/year/:year" element={<UnitSelectionPage />} />
         <Route path="/exams/:examId/year/:year/unit/:unitIndex" element={<Question />} />
         <Route path="/courses/:courseId/chapters/:chapterIndex" element={<ChapterDisplayPage />} />
 

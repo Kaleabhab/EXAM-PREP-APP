@@ -4,8 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiArrowLeft, FiBookOpen, FiChevronRight, FiClock, FiAward } from 'react-icons/fi';
 import exams from '../data/exams';
 
+
+
 const UnitSelectionPage = () => {
-  const { examId, yearTitle } = useParams();
+  const { examId, year } = useParams();
   const navigate = useNavigate();
 
   const exam = exams.find(c => c.id === parseInt(examId));
@@ -20,7 +22,7 @@ const UnitSelectionPage = () => {
     }
 
     // Load completion data from localStorage
-    const savedDataJSON = localStorage.getItem(`quizCompletion_${examId}_${yearTitle}`);
+    const savedDataJSON = localStorage.getItem(`quizCompletion_${examId}_${year}`);
     const savedData = savedDataJSON ? JSON.parse(savedDataJSON) : {};
 
     // Calculate total progress
@@ -30,13 +32,31 @@ const UnitSelectionPage = () => {
 
     const updatedChapters = exam.units.map((unit, index) => {
       const unitId = index + 1;
-      const resultJSON = localStorage.getItem(`quizResult_${unit}`);
-      const result = resultJSON ? JSON.parse(resultJSON) : null;
+
+      const completionKey = `quizCompletion_${examId}_${year}_${unitId}`;
+      const completionData = JSON.parse(localStorage.getItem(completionKey) || "{}");
+   // const unitCompletionData = JSON.parse(localStorage.getItem(completionKey) || "{}");
       
+      const resultKey = `quizResult_${examId}_${year}_${unitId}`;
+      const resultData = JSON.parse(localStorage.getItem(resultKey) || "null");
+      //const resultJSON = JSON.parse(localStorage.getItem(resultKey));
+      //const resultJSON = localStorage.getItem(`quizResult_${examId}_${year}_${unitId}`);
+      const result = resultData ? resultData : null;
+
+      const totalUnits = exam.units.length;
+      let completedUnits = 0;
+
+      exam.units.forEach((_, index) => {
+      const unitId = index + 1;
+      if (completionData[unitId]) {
+        completedUnits++;
+      }
+    });
+     //const progress = totalUnits > 0 ? (completedUnits / totalUnits) * 100 : 0;
       const progress = result ? (result.score / result.total) * 100 : 0;
 
       // Check if unit is completed (score > 0 or saved in completion data)
-      const isCompleted = !!savedData[unitId] || (result && result.score > 0);
+      const isCompleted = !!completionData[unitId] || (result && result.score > 0);
       if (isCompleted) completedCount++;
       
       // Accumulate for total progress
@@ -58,7 +78,7 @@ const UnitSelectionPage = () => {
     const overallProgress = maxPossibleScore > 0 ? (totalScore / maxPossibleScore) * 100 : 0;
     setTotalProgress(overallProgress);
     setChaptersList(updatedChapters);
-  }, [exam, examId, yearTitle]);
+  }, [exam, examId, year]);
 
   // Calculate completed count based on both completion data and quiz results
   const completedCount = chaptersList.reduce((count, unit) => {
@@ -115,7 +135,7 @@ const UnitSelectionPage = () => {
             <p className="text-gray-600">
               {exam.description || 'Master the fundamentals with this comprehensive exam'}
             </p>
-            <p className="text-sm text-gray-500 mt-1">Year: {yearTitle}</p>
+            <p className="text-sm text-gray-500 mt-1">Year: {year}</p>
           </div>
         </div>
 
@@ -164,7 +184,7 @@ const UnitSelectionPage = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() =>
-                  navigate(`/exams/${examId}/year/${yearTitle}/unit/${unit.id}`)
+                  navigate(`/exams/${examId}/year/${year}/unit/${unit.id}`)
                 }
                 className={`p-5 bg-white rounded-xl shadow-sm border border-gray-200 hover:border-blue-300 cursor-pointer transition-all ${
                   unit.completed ? 'border-l-4 border-l-green-500' : ''

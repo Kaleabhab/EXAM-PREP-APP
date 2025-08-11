@@ -19,6 +19,22 @@ const exams = [
         explanation: ""
       },
       {
+        year: "2012",
+        unit: "Styling with CSS",
+        question: "Which keyword was introduced in ES6 for block-scoped variables?",
+        options: ["var", "const", "let", "define"],
+        correctAnswer: "let",
+        explanation: "`let` and `const` were introduced in ES6 for block-scoped variables."
+      },
+      {
+        year: "2012",
+        unit: "JavaScript Basics",
+        question: "Which keyword was introduced in ES6 for block-scoped variables?",
+        options: ["var", "const", "let", "define"],
+        correctAnswer: "let",
+        explanation: "`let` and `const` were introduced in ES6 for block-scoped variables."
+      },
+      {
         year: "2013",
         unit: "Intro to HTML",  // ✅ fixed from "chapter"
         question: "What is the capital of France?",
@@ -76,6 +92,7 @@ const exams = [
         correctAnswer: "let",
         explanation: "`let` and `const` were introduced in ES6 for block-scoped variables."
       },
+      
       {
         year: "2017",
         unit: "Async JS",
@@ -174,5 +191,7 @@ const exams = [
     ]
   }
 ];
+
+
 
 export default exams;

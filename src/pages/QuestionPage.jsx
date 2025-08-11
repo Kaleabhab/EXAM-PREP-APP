@@ -79,10 +79,15 @@ const Question = () => {
       };
       // Save result per unit and per year
       localStorage.setItem(`quizResult_${unitName}`, JSON.stringify(resultData));
-      localStorage.setItem(`quizResult_${year}`, JSON.stringify(resultData));
+      localStorage.setItem(`quizResult_${year}_${unitId}`, JSON.stringify(resultData));
 
       // Mark unit as completed (using unitId)
-      const completionKey = `quizCompletion_${examId}_${year}`;
+      const resultKey = `quizResult_${examId}_${year}_${unitId}`;
+      resultData.id = unitId; // Add unitId to result data
+      //resultData.year = year; // Add year to result data
+      localStorage.setItem(resultKey, JSON.stringify(resultData));
+      // Update completion status in localStorage
+      const completionKey = `quizCompletion_${examId}_${year}_${unitId}`;
       const savedData = JSON.parse(localStorage.getItem(completionKey) || '{}');
       savedData[unitId] = true;
       localStorage.setItem(completionKey, JSON.stringify(savedData));
