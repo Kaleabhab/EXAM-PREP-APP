@@ -16,14 +16,14 @@ const YearPage = () => {
         animate={{ opacity: 1 }}
         className="min-h-screen flex items-center justify-center p-6"
       >
-        <div className="max-w-md p-8 bg-white rounded-xl shadow-lg text-center">
+        <div className="max-w-md p-8 bg-white rounded-xl shadow-lg text-center dark:bg-gray-800">
           <h2 className="text-2xl font-bold text-red-600 mb-4">Course Not Found</h2>
           <p className="text-gray-600 mb-6">
             The course you're looking for doesn't exist or may have been removed.
           </p>
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center justify-center px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mx-auto"
+            className="flex items-center justify-center px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mx-auto dark:bg-blue-500 dark:text-white dark:hover:bg-blue-600"
           >
             <FiArrowLeft className="mr-2" />
             Go Back
@@ -73,14 +73,14 @@ const YearPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6"
+      className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 dark:bg-gray-900 text-gray-800 dark:text-gray-200"
     >
       <div className="max-w-4xl mx-auto">
         {/* Course Header */}
         <div className="flex items-start mb-8">
           <button
             onClick={() => navigate(-1)}
-            className="mr-4 p-2 rounded-full hover:bg-gray-200 transition-colors"
+            className="mr-4 p-2 rounded-full hover:bg-gray-200 transition-colors dark:hover:bg-gray-700"
           >
             <FiArrowLeft className="w-5 h-5" />
           </button>
@@ -89,24 +89,24 @@ const YearPage = () => {
               <span className="text-3xl mr-3">{exam.icon}</span>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{exam.title}</h1>
             </div>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               {exam.description || 'Master the fundamentals with this comprehensive exam'}
             </p>
           </div>
         </div>
 
         {/* Progress Overview */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-8 dark:bg-gray-800">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div className="mb-4 sm:mb-0 w-full sm:w-auto">
               <h3 className="text-lg font-semibold mb-1">Exam Progress</h3>
-              <div className="w-full bg-gray-200 rounded-full h-2.5">
+              <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                 <div 
-                  className="bg-blue-600 h-2.5 rounded-full" 
+                  className="bg-blue-600 h-2.5 rounded-full dark:bg-blue-500" 
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
-              <div className="text-sm text-gray-500 mt-1">
+              <div className="text-sm text-gray-500 mt-1 dark:text-gray-300">
                 {Math.round(progressPercent)}% complete ({totalCompletedUnits}/{totalPossibleUnits} units)
               </div>
             </div>
@@ -125,7 +125,7 @@ const YearPage = () => {
 
         {/* Years List */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+          <h2 className="text-xl font-semibold text-gray-800 flex items-center dark:text-gray-200">
             <FiBookOpen className="mr-2" />
             Course Years
           </h2>
@@ -140,7 +140,7 @@ const YearPage = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => navigate(`/exams/${examId}/year/${year.title}`)}
-                className={`p-5 bg-white rounded-xl shadow-sm border border-gray-200 hover:border-blue-300 cursor-pointer transition-all ${
+                className={`p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 hover:border-blue-300 cursor-pointer transition-all ${
                   year.completed ? 'border-l-4 border-l-green-500' : ''
                 }`}
               >
@@ -149,22 +149,22 @@ const YearPage = () => {
                     <div className="flex items-center mb-1">
                       <h3 className="font-medium text-lg mr-2">{year.title}</h3>
                       {year.completed && (
-                        <span className="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded-full flex items-center">
+                        <span className="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded-full flex items-center dark:bg-green-700 dark:text-green-100">
                           <FiAward className="mr-1" /> In Progress
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center text-sm text-gray-500 mb-2">
+                    <div className="flex items-center text-sm text-gray-500 mb-2 dark:text-gray-400">
                       <FiClock className="mr-1" />
                       <span>{year.duration}</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
                       <div 
-                        className="bg-blue-500 h-2 rounded-full" 
+                        className="bg-blue-500 h-2 rounded-full dark:bg-blue-400" 
                         style={{ width: `${year.progress}%` }}
                       />
                     </div>
-                    <div className="text-xs text-gray-500 mt-1">
+                    <div className="text-xs text-gray-500 mt-1 dark:text-gray-300">
                       {Math.round(year.progress)}% complete ({year.completedUnits}/{year.totalUnits} units)
                     </div>
                   </div>
@@ -179,7 +179,7 @@ const YearPage = () => {
         <div className="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
           <button
             onClick={() => navigate(`/exams/${examId}/year/${yearsList[0]?.title}`)}
-            className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center"
+            className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium  hover:bg-blue-700 transition-colors flex items-center justify-center"
           >
             Start First Year
           </button>
