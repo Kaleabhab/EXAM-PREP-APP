@@ -16,6 +16,7 @@ import {
   FiSettings,
   FiClock
 } from "react-icons/fi";
+//import { useTheme } from "../context/ThemeContext";
 import { useTheme } from "../context/ThemeContext";
 import useAuth from "../hooks/useAuth";
 

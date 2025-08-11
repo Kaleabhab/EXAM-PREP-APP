@@ -17,7 +17,7 @@ import Exams from '../pages/Exams';
 import Settings from '../pages/Settings';
 import SettingsPage from '../pages/Settings';
 import ChapterSelectionPage from '../pages/ChapterSelectionPage';
-import { ExamChapterSelectionPage } from '../pages/ChapterSelectionPage';
+//import { ExamChapterSelectionPage } from '../pages/ChapterSelectionPage';
 import YearPage from '../pages/YearSelection';
 //import UnitSelectionPage from '../pages/UnitSelection';
 //import unitSelectionPage from '../pages/UnitSelection';
