@@ -1,6 +1,6 @@
 const notedata = {
   // Web Development Fundamentals Course
-  webdev101: {
+  1: {
     meta: {
       title: "Web Development Fundamentals",
       description: "Master HTML, CSS, and JavaScript basics",
@@ -146,40 +146,8 @@ const notedata = {
             type: "p",
             text: "JavaScript adds interactivity to web pages."
           },
-          {
-            type: "code",
-            language: "javascript",
-            code: `// Variable declaration
-let message = "Hello World!";
-
-// Function definition
-function showAlert() {
-  alert(message);
-}
-
-// Event listener
-document.getElementById('myButton')
-  .addEventListener('click', showAlert);`,
-            executable: true
-          },
-          {
-            type: "callout",
-            variant: "tip",
-            title: "Debugging Tip",
-            content: "Use console.log() to output values for debugging."
-          },
-          {
-            type: "exercise",
-            title: "Create a Counter",
-            instructions: "Build a button that increments and displays a count",
-            solution: `let count = 0;
-document.getElementById('counter')
-  .addEventListener('click', () => {
-    count++;
-    document.getElementById('display')
-      .textContent = count;
-  });`
-          }
+          
+          
         ]
       }
     ]

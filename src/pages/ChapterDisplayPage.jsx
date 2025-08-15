@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiCopy, FiMaximize2, FiMinimize2, FiBookmark, FiShare2 } from "react-icons/fi";
 import { motion } from "framer-motion";
@@ -89,6 +89,38 @@ const BlockRenderer = ({ block, index }) => {
           ))}
         </motion.div>
       );
+      case "grid":
+  return (
+    <motion.div
+      variants={blockVariants}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      className={`my-6 grid gap-4 ${block.columns === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}
+    >
+      {block.items.map((item, itemIndex) => (
+        <motion.div
+          key={itemIndex}
+          whileHover={{ scale: 1.02 }}
+          className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+        >
+          {item.icon && (
+            <div className="text-2xl mb-2">
+              {item.icon}
+            </div>
+          )}
+          {item.title && (
+            <h3 className="font-semibold text-lg mb-1 text-gray-800 dark:text-gray-200">
+              {item.title}
+            </h3>
+          )}
+          {item.content && (
+            <p className="text-gray-600 dark:text-gray-400">
+              {item.content}
+            </p>
+          )}
+        </motion.div>
+      ))}
+    </motion.div>
+  );
     case "code":
       return (
         <motion.div
@@ -167,6 +199,135 @@ const BlockRenderer = ({ block, index }) => {
           )}
         </motion.div>
       );
+      case "image":
+  return (
+    <motion.figure
+      variants={blockVariants}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      className="my-8 flex flex-col items-center"
+    >
+      <img
+        src={block.src}
+        alt={block.alt || ""}
+        className="rounded-lg shadow-lg max-w-full h-auto border border-gray-200 dark:border-gray-700"
+        loading="lazy"
+      />
+      {block.caption && (
+        <figcaption className="mt-3 text-sm text-center text-gray-500 dark:text-gray-400">
+          {block.caption}
+        </figcaption>
+      )}
+    </motion.figure>
+  );
+  case "tabs":
+  const [activeTab, setActiveTab] = useState(0);
+  
+  return (
+    <motion.div
+      variants={blockVariants}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      className="my-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
+    >
+      <div className="flex border-b border-gray-200 dark:border-gray-700">
+        {block.tabs.map((tab, tabIndex) => (
+          <button
+            key={tabIndex}
+            onClick={() => setActiveTab(tabIndex)}
+            className={`px-4 py-3 text-sm font-medium transition-colors ${
+              activeTab === tabIndex
+                ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 dark:border-blue-400"
+                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+            }`}
+          >
+            {tab.title}
+          </button>
+        ))}
+      </div>
+      <div className="p-4">
+        {block.tabs[activeTab].content.map((content, contentIndex) => (
+          <BlockRenderer key={contentIndex} block={content} index={contentIndex} />
+        ))}
+      </div>
+    </motion.div>
+  );
+  case "quiz":
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [showExplanation, setShowExplanation] = useState(false);
+
+  return (
+    <motion.div
+      variants={blockVariants}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      className="my-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"
+    >
+      <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
+        {block.question}
+      </h3>
+      <div className="space-y-3">
+        {block.options.map((option, optionIndex) => (
+          <div
+            key={optionIndex}
+            onClick={() => {
+              setSelectedOption(optionIndex);
+              setShowExplanation(false);
+            }}
+            className={`p-3 rounded-lg cursor-pointer transition-colors ${
+              selectedOption === optionIndex
+                ? optionIndex === block.correctAnswer
+                  ? "bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700"
+                  : "bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700"
+                : "bg-gray-50 dark:bg-gray-700/30 hover:bg-gray-100 dark:hover:bg-gray-700/50"
+            }`}
+          >
+            {option}
+          </div>
+        ))}
+      </div>
+      {selectedOption !== null && (
+        <button
+          onClick={() => setShowExplanation(!showExplanation)}
+          className="mt-4 text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center"
+        >
+          {showExplanation ? "Hide explanation" : "Show explanation"}
+        </button>
+      )}
+      {showExplanation && block.explanation && (
+        <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/10 rounded-lg text-sm text-gray-700 dark:text-gray-300">
+          {block.explanation}
+        </div>
+      )}
+    </motion.div>
+  );
+  case "video":
+  return (
+    <motion.div
+      variants={blockVariants}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      className="my-8 rounded-lg overflow-hidden shadow-lg bg-black"
+    >
+      <div className="relative pt-[56.25%]"> {/* 16:9 aspect ratio */}
+        <video
+          controls
+          className="absolute top-0 left-0 w-full h-full"
+          poster={block.thumbnail || ''}
+        >
+          <source src={block.src} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      {block.caption && (
+        <figcaption className="mt-2 text-sm text-center text-gray-500 dark:text-gray-400 p-2">
+          {block.caption}
+          {block.duration && (
+            <span className="ml-2 text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
+              {block.duration}
+            </span>
+          )}
+        </figcaption>
+      )}
+    </motion.div>
+  );
+  
     case "img":
       return (
         <motion.figure
